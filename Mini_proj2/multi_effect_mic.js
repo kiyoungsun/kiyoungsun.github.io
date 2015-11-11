@@ -287,7 +287,7 @@
 		alert("Error: getUserMedia not supported!");
 						
 	// get audio input streaming 				 
-	navigator.getUserMedia({audio: true}, onStream, onStreamError)
+	navigator.getUserMedia({audio: true, delay_bypass: true}, onStream, onStreamError)
 
 	// successCallback
 	function onStream(stream) {
@@ -315,33 +315,6 @@
 
 
 ///////////////////////////////////////////
-
-	function biquad_run(input){
-		if (!biquad_bypass){
-			input.connect(biquad);
-			biquad.connect(context.destination);
-		}
-	}
-
-	function delay_run(input){
-		if (!delay_bypass){
-			input.connect(delay);
-			delay.connect(context.destination);
-			delay.connect(feedbackGain);
-			feedbackGain.connect(delay);
-		}
-	}
-
-	function reverb_run(input){
-		if (!reverb_bypass){
-			input.connect(convolver);
-			convolver.connect(wetGain);
-			wetGain.connect(context.destination);
-
-			input.connect(dryGain);
-			dryGain.connect(context.destination);
-		}
-	}
 
 	function toggleFilterBypass() {
 		if ( biquad_bypass ) {

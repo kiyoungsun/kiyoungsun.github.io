@@ -295,26 +295,44 @@
 		
 		// Connect input	
 
-					input.connect(delay);
-			delay.connect(context.destination);
-			delay.connect(feedbackGain);
-			feedbackGain.connect(delay);
-				
 		input.connect(context.destination);
 
+		biquad_run(input);
+		delay_run(input);
+		reverb_run(input);
 
+		// pass through
+//		input.connect(context.destination);
+
+		// visualize audio
+	}
+	
+	// errorCallback			 
+	function onStreamError(error) {
+		console.error('Error getting microphone', error);
+	}
+
+
+
+///////////////////////////////////////////
+
+	function biquad_run(input){
 		if (!biquad_bypass){
 			input.connect(biquad);
 			biquad.connect(context.destination);
 		}
+	}
 
+	function delay_run(input){
 		if (!delay_bypass){
 			input.connect(delay);
 			delay.connect(context.destination);
 			delay.connect(feedbackGain);
 			feedbackGain.connect(delay);
 		}
+	}
 
+	function reverb_run(input){
 		if (!reverb_bypass){
 			input.connect(convolver);
 			convolver.connect(wetGain);
@@ -323,8 +341,9 @@
 			input.connect(dryGain);
 			dryGain.connect(context.destination);
 		}
-		
-		function toggleFilterBypass() {
+	}
+
+	function toggleFilterBypass() {
 		if ( biquad_bypass ) {
 			input.connect(biquad);
 			biquad.connect(context.destination);
@@ -367,17 +386,4 @@
 			reverb_bypass = true;
 		}
 	}	
-		// pass through
-//		input.connect(context.destination);
-
-		// visualize audio
-	}
-	
-	// errorCallback			 
-	function onStreamError(error) {
-		console.error('Error getting microphone', error);
-	}
-
-
-
 	

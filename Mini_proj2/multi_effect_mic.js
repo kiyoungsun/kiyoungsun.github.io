@@ -316,7 +316,7 @@
 
 ///////////////////////////////////////////
 	function biquad_run(input){
-		if (biquad_bypass){
+		if (!biquad_bypass){
 			input.connect(biquad);
 			biquad.connect(context.destination);	
 		}
@@ -326,7 +326,7 @@
 	}
 
 	function delay_run(input){
-		if (delay_bypass){
+		if (!delay_bypass){
 			input.connect(delay);
 			delay.connect(context.destination);
 			delay.connect(feedbackGain);

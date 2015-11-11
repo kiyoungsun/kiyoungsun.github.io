@@ -293,8 +293,10 @@
 	navigator.getUserMedia({audio: true}, onStream, onStreamError)
 
 	// successCallback
+	var input = context.createMediaStreamSource(stream);
+	
 	function onStream(stream) {
-	    var input = context.createMediaStreamSource(stream);
+
 		
 		input.connect(context.destination);
 		console.log('1');

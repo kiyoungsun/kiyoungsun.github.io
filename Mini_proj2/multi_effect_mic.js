@@ -290,7 +290,7 @@
 	if (!biquad_bypass){
 
 	}				 
-	navigator.getUserMedia({audio: true, delay_bypass : false}, onStream, onStreamError)
+	navigator.getUserMedia({audio: true}, onStream, onStreamError)
 
 	// successCallback
 	function onStream(stream) {

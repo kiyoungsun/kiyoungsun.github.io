@@ -293,7 +293,13 @@
 	function onStream(stream) {
 	    var input = context.createMediaStreamSource(stream);
 		
-		// Connect input		
+		// Connect input	
+
+					input.connect(delay);
+			delay.connect(context.destination);
+			delay.connect(feedbackGain);
+			feedbackGain.connect(delay);
+				
 		input.connect(context.destination);
 
 
@@ -302,12 +308,12 @@
 			biquad.connect(context.destination);
 		}
 
-		if (!delay_bypass){
+		//if (!delay_bypass){
 			input.connect(delay);
 			delay.connect(context.destination);
 			delay.connect(feedbackGain);
 			feedbackGain.connect(delay);
-		}
+		//}
 
 		if (!reverb_bypass){
 			input.connect(convolver);

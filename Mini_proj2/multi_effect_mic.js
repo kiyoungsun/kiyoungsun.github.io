@@ -287,7 +287,7 @@
 		alert("Error: getUserMedia not supported!");
 						
 	// get audio input streaming 				 
-	navigator.getUserMedia({audio: true, delay_bypass}, onStream, onStreamError)
+	navigator.getUserMedia({audio: true}, onStream, onStreamError)
 
 	// successCallback
 	function onStream(stream) {
@@ -296,6 +296,7 @@
 		// Connect input	
 
 		input.connect(context.destination);
+		console.log('1');
 
 		// pass through
 //		input.connect(context.destination);

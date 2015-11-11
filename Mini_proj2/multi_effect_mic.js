@@ -342,7 +342,7 @@
 
 	function toggleDelayBypass() {
 		if ( delay_bypass ) {
-			test();
+
 			delay_bypass = false;
 		}
 		else {

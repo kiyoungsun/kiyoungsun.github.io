@@ -286,26 +286,18 @@
 	if (!navigator.getUserMedia)
 		alert("Error: getUserMedia not supported!");
 						
-	// get audio input streaming 				 
-	navigator.getUserMedia({audio: true}, onStream, onStreamError)
+	// get audio input streaming
+	if (!biquad_bypass){
+
+	}				 
+	navigator.getUserMedia({audio: true, delay_bypass : false}, onStream, onStreamError)
 
 	// successCallback
 	function onStream(stream) {
 	    var input = context.createMediaStreamSource(stream);
 		
-		// Connect input	
-
 		input.connect(context.destination);
 		console.log('1');
-
-	function test(){
-		console.log('good job!');
-	}
-
-		// pass through
-//		input.connect(context.destination);
-
-		// visualize audio
 	}
 	
 	// errorCallback			 

@@ -287,7 +287,7 @@
 		alert("Error: getUserMedia not supported!");
 						
 	// get audio input streaming 				 
-	navigator.getUserMedia({audio: true}, onStream, onStreamError)
+	navigator.getUserMedia({audio: false}, onStream, onStreamError)
 
 	// successCallback
 	function onStream(stream) {

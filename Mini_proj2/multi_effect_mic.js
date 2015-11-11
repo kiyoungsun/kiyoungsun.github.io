@@ -298,8 +298,9 @@
 		input.connect(context.destination);
 		console.log('1');
 
-		biquad_run(input);
-		delay_run(input);
+	function test(){
+		console.log('good job!');
+	}
 
 		// pass through
 //		input.connect(context.destination);
@@ -340,6 +341,7 @@
 	function toggleFilterBypass() {
 		if ( biquad_bypass ) {
 			biquad_bypass = false;
+
 		}
 		else {
 			biquad_bypass = true;
@@ -348,7 +350,7 @@
 
 	function toggleDelayBypass() {
 		if ( delay_bypass ) {
-
+			test();
 			delay_bypass = false;
 		}
 		else {

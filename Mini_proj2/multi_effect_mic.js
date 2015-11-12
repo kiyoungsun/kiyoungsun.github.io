@@ -287,22 +287,38 @@
 		alert("Error: getUserMedia not supported!");
 						
 	// get audio input streaming
+	if(!delay_bypass){
+		navigator.getUserMedia({audio: true}, onStream1, onStreamError);
+	}
+	else{
+				navigator.getUserMedia({audio: true}, onStream2, onStreamError);
 
-	var a = true;
-	 
-	navigator.getUserMedia({audio: true, a : false}, onStream, onStreamError);
-	
+	}
 	// successCallback
 	
-	function onStream(stream) {
+	function onStream1(stream) {
 
 		var input = context.createMediaStreamSource(stream);
 
 		input.connect(context.destination);
 		console.log('1');
 	}
+		function onStream2(stream) {
+
+		var input = context.createMediaStreamSource(stream);
+
+		input.connect(context.destination);
+		console.log('2');
+	}
 	
-	// errorCallback			 
+
+	function onStream(stream) {
+
+		var input = context.createMediaStreamSource(stream);
+
+		input.connect(context.destination);
+		console.log('1');
+	}	// errorCallback			 
 	function onStreamError(error) {
 		console.error('Error getting microphone', error);
 	}
@@ -310,44 +326,30 @@
 
 
 ///////////////////////////////////////////
-	function biquad_run(input){
-		if (!biquad_bypass){
-			input.connect(biquad);
-			biquad.connect(context.destination);	
-		}
-		else {
-			input.disconnect(biquad);
-		}
-	}
-
-	function delay_run(input){
-		if (!delay_bypass){
-			input.connect(delay);
-			delay.connect(context.destination);
-			delay.connect(feedbackGain);
-			feedbackGain.connect(delay);
-		}
-		else {
-			input.disconnect(delay);
-		}
-	}
 
 	function toggleFilterBypass() {
 		if ( biquad_bypass ) {
+			input.connect(biquad);
+			biquad.connect(context.destination);	
 			biquad_bypass = false;
 
 		}
 		else {
+			input.disconnect(biquad);
 			biquad_bypass = true;
 		}
 	}	
 
 	function toggleDelayBypass() {
 		if ( delay_bypass ) {
-
+			input.connect(delay);
+			delay.connect(context.destination);
+			delay.connect(feedbackGain);
+			feedbackGain.connect(delay);
 			delay_bypass = false;
 		}
 		else {
+			input.disconnect(delay);
 			delay_bypass = true;
 		}
 		console.log(delay_bypass);

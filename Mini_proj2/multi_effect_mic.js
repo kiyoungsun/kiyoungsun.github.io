@@ -280,6 +280,16 @@
 
 
 	///////////////////////////////////////////
+
+	// -KYSun- onoff gains for temp process of bypass for each filter, delay and reverb
+		var biquad_onoff = context.createGain();
+		var delay_onoff = context.createGain();
+		var reverb_onoff = context.createGain();
+
+		biquad_onoff.gain = 1;
+		delay_onoff.gain = 1;
+		reverb_onoff.gain = 1;
+
 	// -KYSun- using getUserMedia to stream the microphone
 
 

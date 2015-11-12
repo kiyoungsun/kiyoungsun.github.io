@@ -44,8 +44,9 @@
 	// convolver
 	var reverb_types = [
 		"sample1.wav",
-		"sample2.wav",
-		"sample3.wav"
+		"my_sample1.wav",
+		"my_sample2.wav",
+		"my_sample3.wav"
 	];
 
 	var reverb_params = {

@@ -295,6 +295,16 @@
 
 	///////////////////////////////////////////
 	// play and stop
+
+			var biquad_onoff = context.createGain();
+		var delay_onoff = context.createGain();
+		var reverb_onoff = context.createGain();
+
+		biquad_onoff.gain = 1;
+		delay_onoff.gain = 1;
+		reverb_onoff.gain = 1;
+
+		
 	function playSound(anybuffer) {
 		// create buffersource
 		source = context.createBufferSource();
@@ -308,13 +318,6 @@
 		// fill out the following part
 		/////////////////////////////////////////////////////
 
-		var biquad_onoff = context.createGain();
-		var delay_onoff = context.createGain();
-		var reverb_onoff = context.createGain();
-
-		biquad_onoff.gain = 1;
-		delay_onoff.gain = 1;
-		reverb_onoff.gain = 1;
 
 		source.connect(biquad_onoff);
 
@@ -408,7 +411,7 @@ function toggleFilterBypass() {
 		}
 		else {
 			converb_onoff.disconnect(context.destination);
-			
+
 			converb_onoff.connect(convolver);
 			convolver.connect(wetGain);
 			wetGain.connect(context.destination);

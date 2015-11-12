@@ -349,7 +349,6 @@
 			delay_bypass = false;
 		}
 		else {
-			input.disconnect(delay);
 			delay_bypass = true;
 		}
 		console.log(delay_bypass);

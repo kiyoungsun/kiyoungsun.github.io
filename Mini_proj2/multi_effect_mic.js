@@ -324,6 +324,23 @@
 		// fill out the following part
 		/////////////////////////////////////////////////////
 		
+		source.connect(biquad_onoff);
+		
+		biquad_onoff.connect(biquad);
+		biquad.connect(delay_onoff);
+
+		delay_onoff.connect(delay);
+		delay.connect(reverb_onoff);
+		delay.connect(feedbackGain);
+		feedbackGain.connect(delay);
+		
+		reverb_onoff.connect(convolver);
+		reverb_onoff.connect(dryGain)
+		convolver.connect(wetGain);
+
+		dryGain.connect(context.destination);
+		wetGain.connect(context.destination);
+/*
 		if (!biquad_bypass){
 		biquad_onoff.connect(biquad);
 		biquad.connect(delay_onoff);
@@ -343,17 +360,17 @@
 		delay_onoff.connect(reverb_onoff);
 		}
 
-		//if (!reverb_bypass){
+		if (!reverb_bypass){
 		reverb_onoff.connect(convolver);
 		convolver.connect(wetGain);
 		wetGain.connect(context.destination);
 		reverb_onoff.connect(dryGain);
 		dryGain.connect(context.destination);		
-		//}
-		//else{
-		//reverb_onoff.connect(context.destination);
-		//}
-
+		}
+		else{
+		reverb_onoff.connect(context.destination);
+		}
+*/
 
 		
 	

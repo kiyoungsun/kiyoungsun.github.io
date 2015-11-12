@@ -397,7 +397,7 @@ function toggleFilterBypass() {
 	function toggleReverbBypass() {
 		if ( reverb_bypass ) {
 
-			revreb_onoff.connect(convolver);
+			reverb_onoff.connect(convolver);
 			reverb_onoff.connect(dryGain);
 
 			reverb_onoff.disconnect(context.destination);
@@ -406,7 +406,7 @@ function toggleFilterBypass() {
 		else {
 			reverb_onoff.connect(context.destination);
 
-			
+
 			reverb_onoff.disconnect(convolver);
 			reverb_onoff.disconnect(dryGain);
 

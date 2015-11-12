@@ -290,9 +290,8 @@
 
 	var a = true;
 	 
-	 if (!a){
-	navigator.getUserMedia({audio: true}, onStream, onStreamError);
-	}
+	navigator.getUserMedia({audio: true, a : false}, onStream, onStreamError);
+	
 	// successCallback
 	
 	function onStream(stream) {

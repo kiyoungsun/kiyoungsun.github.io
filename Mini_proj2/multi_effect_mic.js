@@ -287,29 +287,11 @@
 		alert("Error: getUserMedia not supported!");
 						
 	// get audio input streaming
-	if(!delay_bypass){
-		navigator.getUserMedia({audio: true}, onStream1, onStreamError);
-	}
-	else{
-				navigator.getUserMedia({audio: true}, onStream2, onStreamError);
 
-	}
+	navigator.getUserMedia({audio: true}, onStream, onStreamError);
+
+
 	// successCallback
-	
-	function onStream1(stream) {
-
-		var input = context.createMediaStreamSource(stream);
-
-		input.connect(context.destination);
-		console.log('1');
-	}
-		function onStream2(stream) {
-
-		var input = context.createMediaStreamSource(stream);
-
-		input.connect(context.destination);
-		console.log('2');
-	}
 	
 
 	function onStream(stream) {
@@ -317,7 +299,11 @@
 		var input = context.createMediaStreamSource(stream);
 
 		input.connect(context.destination);
-		console.log('1');
+		
+		if (!biquad_bypass){
+			console.log('1');
+		}
+
 	}	// errorCallback			 
 	function onStreamError(error) {
 		console.error('Error getting microphone', error);

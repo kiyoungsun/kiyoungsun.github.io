@@ -296,6 +296,7 @@
 	///////////////////////////////////////////
 	// play and stop
 
+	// -KYSun- onoff gains for temp process of bypass for each filter, delay and reverb
 		var biquad_onoff = context.createGain();
 		var delay_onoff = context.createGain();
 		var reverb_onoff = context.createGain();
@@ -317,7 +318,10 @@
 		//
 		// fill out the following part
 		/////////////////////////////////////////////////////
-		
+
+		// -KYSun- if statements for initial conditions
+		// in the case of  stop and then start again 
+
 		source.connect(biquad_onoff);
 
 		if (!biquad_bypass){
@@ -351,14 +355,6 @@
 		reverb_onoff.connect(context.destination);
 		}
 
-		
-
-
-
-
-		
-	
-		/////////////////////////////////////////////////////
 		source.start();
 	}
 
@@ -376,20 +372,18 @@
 	}	
 
 		/////////////////////////////////////////////////////
+		// -KYSun- toggle functions for filter, delay and reverb
+
 
 function toggleFilterBypass() {
 		if ( biquad_bypass ) {
 			biquad_onoff.disconnect();
 			biquad_onoff.connect(biquad);
-
-
 			biquad_bypass = false;
 		}
 		else {
 			biquad_onoff.disconnect();
 			biquad_onoff.connect(delay_onoff);
-
-
 			biquad_bypass = true;
 		}
 	}	
@@ -397,16 +391,12 @@ function toggleFilterBypass() {
 	function toggleDelayBypass() {
 		if ( delay_bypass ) {
 			delay_onoff.disconnect();
-
 			delay_onoff.connect(delay);
-
-
 			delay_bypass = false;
 		}
 		else {
 			delay_onoff.disconnect();			
 			delay_onoff.connect(reverb_onoff);
-
 			delay_bypass = true;
 		}
 	}	
@@ -414,21 +404,13 @@ function toggleFilterBypass() {
 	function toggleReverbBypass() {
 		if ( reverb_bypass ) {
 			reverb_onoff.disconnect();
-
 			reverb_onoff.connect(convolver);
 			reverb_onoff.connect(dryGain);
-
-
 			reverb_bypass = false;
 		}
 		else {
-
-
 			reverb_onoff.disconnect();
-
 			reverb_onoff.connect(context.destination);
-
-
 			reverb_bypass = true;
 		}
 	}	

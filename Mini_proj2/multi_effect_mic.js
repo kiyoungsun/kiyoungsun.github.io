@@ -4,15 +4,6 @@
 	var source = null;
 	var myAudioBuffer = null;
 	var loopPlayBack = false;
-	
-
-	var biquad_onoff = context.createGain();
-	var delay_onoff = context.createGain();
-	var reverb_onoff = context.createGain();
-
-	biquad_onoff.gain.value = 1;
-	delay_onoff.gain.value = 1;
-	reverb_onoff.gain.value = 1;
 
 	///////////////////////////////////////////
 	// Biquad filter default
@@ -287,7 +278,9 @@
 	    drawContext.stroke();
     } 
 
+
 	///////////////////////////////////////////
+	// -KYSun- using getUserMedia to stream the microphone
 
 
 	if (!navigator.getUserMedia)
@@ -303,9 +296,7 @@
 	function onStream(stream) {
 
 		var input = context.createMediaStreamSource(stream);
-
 		input.connect(biquad_onoff);
-
 		playSound();
 	}	
 
@@ -313,9 +304,6 @@
 	function onStreamError(error) {
 		console.error('Error getting microphone', error);
 	}
-
-
-
 
 
 	function playSound(anybuffer) {
@@ -326,73 +314,52 @@
 		// fill out the following part
 		/////////////////////////////////////////////////////
 				
-		biquad_onoff.connect(biquad);
-		biquad.connect(delay_onoff);
-
-		delay_onoff.connect(delay);
-		delay.connect(reverb_onoff);
-		delay.connect(feedbackGain);
-		feedbackGain.connect(delay);
-		
-		reverb_onoff.connect(convolver);
-		reverb_onoff.connect(dryGain)
-		convolver.connect(wetGain);
-
-		dryGain.connect(context.destination);
-		wetGain.connect(context.destination);
-/*
+		// -KYSun- if statements for initial conditions
+		// in the case of  stop and then start again 
 		if (!biquad_bypass){
-		biquad_onoff.connect(biquad);
-		biquad.connect(delay_onoff);
+			biquad_onoff.connect(biquad);
+			biquad.connect(delay_onoff);
 		}
 		else{
-		biquad_onoff.connect(delay_onoff)
+			biquad_onoff.connect(delay_onoff)
 		}
 
 		if (!delay_bypass){
-		delay_onoff.connect(delay);
-		delay.connect(reverb_onoff);
-		delay.connect(feedbackGain);
-		feedbackGain.connect(delay);
-
+			delay_onoff.connect(delay);
+			delay.connect(reverb_onoff);
+			delay.connect(feedbackGain);
+			feedbackGain.connect(delay);
 		}
 		else {
-		delay_onoff.connect(reverb_onoff);
+			delay_onoff.connect(reverb_onoff);
 		}
 
 		if (!reverb_bypass){
-		reverb_onoff.connect(convolver);
-		convolver.connect(wetGain);
-		wetGain.connect(context.destination);
-		reverb_onoff.connect(dryGain);
-		dryGain.connect(context.destination);		
+			reverb_onoff.connect(convolver);
+			convolver.connect(wetGain);
+			wetGain.connect(context.destination);
+			reverb_onoff.connect(dryGain);
+			dryGain.connect(context.destination);		
 		}
 		else{
-		reverb_onoff.connect(context.destination);
+			reverb_onoff.connect(context.destination);
 		}
-*/
-
-		
 	
-		/////////////////////////////////////////////////////
 		source.start();
 
 	}
-///////////////////////////////////////////
+		///////////////////////////////////////////
+		// -KYSun- toggle functions for filter, delay and reverb
 
 function toggleFilterBypass() {
 		if ( biquad_bypass ) {
 			biquad_onoff.disconnect();
 			biquad_onoff.connect(biquad);
-
-
 			biquad_bypass = false;
 		}
 		else {
 			biquad_onoff.disconnect();
 			biquad_onoff.connect(delay_onoff);
-
-
 			biquad_bypass = true;
 		}
 	}	
@@ -401,13 +368,11 @@ function toggleFilterBypass() {
 		if ( delay_bypass ) {
 			delay_onoff.disconnect();
 			delay_onoff.connect(delay);
-
 			delay_bypass = false;
 		}
 		else {
 			delay_onoff.disconnect();			
 			delay_onoff.connect(reverb_onoff);
-
 			delay_bypass = true;
 		}
 	}	
@@ -415,21 +380,13 @@ function toggleFilterBypass() {
 	function toggleReverbBypass() {
 		if ( reverb_bypass ) {
 			reverb_onoff.disconnect();
-
 			reverb_onoff.connect(convolver);
 			reverb_onoff.connect(dryGain);
-
-
 			reverb_bypass = false;
 		}
 		else {
-
-
 			reverb_onoff.disconnect();
-
 			reverb_onoff.connect(context.destination);
-
-
 			reverb_bypass = true;
 		}
 	}	

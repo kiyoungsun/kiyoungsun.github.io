@@ -287,12 +287,7 @@
 		alert("Error: getUserMedia not supported!");
 						
 	// get audio input streaming
-	if(biquad_bypass){
-		console.log('1');
-	}
-	else{
-		console.log('2');
-	}
+
 	navigator.getUserMedia({audio: true}, onStream, onStreamError);
 
 
@@ -304,6 +299,14 @@
 		var input = context.createMediaStreamSource(stream);
 
 		input.connect(context.destination);
+
+		if(biquad_bypass){
+		console.log('1');
+	}
+	else{
+		console.log('2');
+	}
+
 
 		if (!biquad_bypass){
 			input.connect(biquad);

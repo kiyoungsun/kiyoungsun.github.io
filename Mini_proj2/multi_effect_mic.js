@@ -45,7 +45,11 @@
 	var reverb_types = [
 		"sample1.wav",
 		"sample2.wav",
-		"sample3.wav"
+		"sample3.wav",
+		"new_reverb1.wav",
+		"new_reverb2.wav",
+		"new_reverb3.wav"
+
 	];
 
 	var reverb_params = {

@@ -287,7 +287,12 @@
 		alert("Error: getUserMedia not supported!");
 						
 	// get audio input streaming
-
+	if(biquad_bypass){
+		console.log('1');
+	}
+	else{
+		console.log('2');
+	}
 	navigator.getUserMedia({audio: true}, onStream, onStreamError);
 
 

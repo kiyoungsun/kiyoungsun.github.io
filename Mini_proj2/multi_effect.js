@@ -377,14 +377,14 @@
 
 function toggleFilterBypass() {
 		if ( biquad_bypass ) {
-			biquad_onoff.disconnect(delay_onoff);
+			biquad_onoff.disconnect();
 			biquad_onoff.connect(biquad);
 
 
 			biquad_bypass = false;
 		}
 		else {
-			biquad_onoff.disconnect(biquad);
+			biquad_onoff.disconnect();
 			biquad_onoff.connect(delay_onoff);
 
 
@@ -394,7 +394,7 @@ function toggleFilterBypass() {
 
 	function toggleDelayBypass() {
 		if ( delay_bypass ) {
-			delay_onoff.disconnect(reverb_onoff);
+			delay_onoff.disconnect();
 			delay_onoff.connect(delay);
 
 			delay.connect(feedbackGain);
@@ -404,7 +404,7 @@ function toggleFilterBypass() {
 			delay_bypass = false;
 		}
 		else {
-			delay_onoff.disconnect(delay);			
+			delay_onoff.disconnect();			
 			delay_onoff.connect(reverb_onoff);
 
 			delay_bypass = true;
@@ -413,7 +413,7 @@ function toggleFilterBypass() {
 
 	function toggleReverbBypass() {
 		if ( reverb_bypass ) {
-			reverb_onoff.disconnect(context.destination);
+			reverb_onoff.disconnect();
 
 			reverb_onoff.connect(convolver);
 			reverb_onoff.connect(dryGain);
@@ -424,8 +424,7 @@ function toggleFilterBypass() {
 		else {
 
 
-			reverb_onoff.disconnect(convolver);
-			reverb_onoff.disconnect(dryGain);
+			reverb_onoff.disconnect();
 
 			reverb_onoff.connect(context.destination);
 

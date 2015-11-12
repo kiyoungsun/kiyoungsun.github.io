@@ -345,7 +345,7 @@
 		wetGain.connect(context.destination);
 		}
 		else{
-		reverb_onoff.connect(source.destination);
+		reverb_onoff.connect(context.destination);
 		}
 
 		

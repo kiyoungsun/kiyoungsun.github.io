@@ -369,7 +369,7 @@ function toggleFilterBypass() {
 		}
 		else {
 
-			biquad_onoff.disconnect(delay_onoff);
+			biquad_onoff.disconnect();
 			biquad_onoff.connect(biquad);
 
 
@@ -388,7 +388,7 @@ function toggleFilterBypass() {
 		}
 		else {
 
-			delay_onoff.disconnect(reverb_onoff);
+			delay_onoff.disconnect();
 			delay_onoff.connect(delay);
 
 			delay.connect(feedbackGain);
@@ -410,7 +410,7 @@ function toggleFilterBypass() {
 			reverb_bypass = false;
 		}
 		else {
-			reverb_onoff.disconnect(context.destination);
+			reverb_onoff.disconnect();
 
 			reverb_onoff.connect(convolver);
 			convolver.connect(wetGain);

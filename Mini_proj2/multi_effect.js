@@ -343,6 +343,8 @@
 		reverb_onoff.connect(convolver);
 		convolver.connect(wetGain);
 		wetGain.connect(context.destination);
+		reverb_onoff.connect(dryGain);
+		dryGain.connect(context.destination);
 		}
 		else{
 		reverb_onoff.connect(context.destination);
@@ -352,8 +354,7 @@
 
 
 
-		reverb_onoff.connect(dryGain);
-		dryGain.connect(context.destination);
+
 		
 	
 		/////////////////////////////////////////////////////

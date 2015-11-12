@@ -432,5 +432,3 @@ function toggleFilterBypass() {
 			reverb_bypass = true;
 		}
 	}	
-	
-	

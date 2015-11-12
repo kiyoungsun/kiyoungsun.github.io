@@ -288,6 +288,34 @@
 		reverb_onoff.gain = 1;
 
 
+	if (!navigator.getUserMedia)
+		navigator.getUserMedia = (navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia);
+							  
+	if (!navigator.getUserMedia)
+		alert("Error: getUserMedia not supported!");
+						
+	// get audio input streaming
+
+	navigator.getUserMedia({audio: true}, onStream, onStreamError);	
+
+	function onStream(stream) {
+
+		var input = context.createMediaStreamSource(stream);
+
+		input.connect(biquad_onoff);
+
+		playSound();
+	}	
+
+	// errorCallback			 
+	function onStreamError(error) {
+		console.error('Error getting microphone', error);
+	}
+
+
+
+
+
 	function playSound() {
 		/////////////////////////////////////////////////////
 		// TODO: cascade three audio effect units
@@ -331,35 +359,6 @@
 		/////////////////////////////////////////////////////
 		source.start();
 	}
-
-	if (!navigator.getUserMedia)
-		navigator.getUserMedia = (navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia);
-							  
-	if (!navigator.getUserMedia)
-		alert("Error: getUserMedia not supported!");
-						
-	// get audio input streaming
-
-	navigator.getUserMedia({audio: true}, onStream, onStreamError);
-
-
-	// successCallback
-	
-
-	function onStream(stream) {
-
-		var input = context.createMediaStreamSource(stream);
-
-		input.connect(biquad_onoff);
-
-		playSound();
-	}	
-
-	// errorCallback			 
-	function onStreamError(error) {
-		console.error('Error getting microphone', error);
-	}
-
 
 
 ///////////////////////////////////////////

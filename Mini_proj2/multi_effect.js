@@ -343,6 +343,7 @@
 		reverb_onoff.connect(convolver);
 		convolver.connect(wetGain);
 		wetGain.connect(context.destination);
+
 		reverb_onoff.connect(dryGain);
 		dryGain.connect(context.destination);
 		}
@@ -396,10 +397,8 @@ function toggleFilterBypass() {
 	function toggleDelayBypass() {
 		if ( delay_bypass ) {
 			delay_onoff.disconnect();
-			delay_onoff.connect(delay);
 
-			delay.connect(feedbackGain);
-			feedbackGain.connect(delay);
+			delay_onoff.connect(delay);
 
 
 			delay_bypass = false;

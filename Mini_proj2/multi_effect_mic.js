@@ -343,16 +343,16 @@
 		delay_onoff.connect(reverb_onoff);
 		}
 
-		if (!reverb_bypass){
+		//if (!reverb_bypass){
 		reverb_onoff.connect(convolver);
 		convolver.connect(wetGain);
 		wetGain.connect(context.destination);
 		reverb_onoff.connect(dryGain);
 		dryGain.connect(context.destination);		
-		}
-		else{
-		reverb_onoff.connect(context.destination);
-		}
+		//}
+		//else{
+		//reverb_onoff.connect(context.destination);
+		//}
 
 
 		
@@ -385,10 +385,6 @@ function toggleFilterBypass() {
 		if ( delay_bypass ) {
 			delay_onoff.disconnect();
 			delay_onoff.connect(delay);
-
-			delay.connect(feedbackGain);
-			feedbackGain.connect(delay);
-
 
 			delay_bypass = false;
 		}

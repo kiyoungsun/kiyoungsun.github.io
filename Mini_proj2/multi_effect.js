@@ -296,7 +296,7 @@
 	///////////////////////////////////////////
 	// play and stop
 
-			var biquad_onoff = context.createGain();
+		var biquad_onoff = context.createGain();
 		var delay_onoff = context.createGain();
 		var reverb_onoff = context.createGain();
 
@@ -407,8 +407,7 @@ function toggleFilterBypass() {
 		else {
 
 
-			reverb_onoff.disconnect(convolver);
-			reverb_onoff.disconnect(dryGain);
+			reverb_onoff.disconnect();
 
 			reverb_onoff.connect(context.destination);
 

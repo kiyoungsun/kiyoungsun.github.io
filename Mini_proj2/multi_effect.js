@@ -317,11 +317,16 @@
 		//
 		// fill out the following part
 		/////////////////////////////////////////////////////
-
-
+		
 		source.connect(biquad_onoff);
 
+		if (!biqad_bypass){
 		biquad_onoff.connect(biquad);
+		}
+		else{
+		biquad_onoff.connect(delay_onoff)
+		}
+
 
 		biquad.connect(delay_onoff);
 

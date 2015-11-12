@@ -315,13 +315,13 @@
 
 	function toggleFilterBypass() {
 		if ( biquad_bypass ) {
-			input.connect(biquad);
-			biquad.connect(context.destination);	
+			//input.connect(biquad);
+			//biquad.connect(context.destination);	
 			biquad_bypass = false;
 
 		}
 		else {
-			input.disconnect(biquad);
+			//input.disconnect(biquad);
 			biquad_bypass = true;
 		}
 	}	
@@ -343,17 +343,17 @@
 
 	function toggleReverbBypass() {
 		if ( reverb_bypass ) {
-			input.connect(convolver);
-			convolver.connect(wetGain);
-			wetGain.connect(context.destination);
+			//input.connect(convolver);
+			//convolver.connect(wetGain);
+			//wetGain.connect(context.destination);
 
-			input.connect(dryGain);
-			dryGain.connect(context.destination);
+			//input.connect(dryGain);
+			//dryGain.connect(context.destination);
 			reverb_bypass = false;
 		}
 		else {
-			input.disconnect(convolver);
-			input.disconnect(dryGain);
+			//input.disconnect(convolver);
+			//input.disconnect(dryGain);
 			reverb_bypass = true;
 		}
 	}	

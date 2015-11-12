@@ -294,13 +294,16 @@
 	// successCallback
 	
 
-	function onStream(stream, biquad_bypass) {
+	function onStream(stream) {
 
 		var input = context.createMediaStreamSource(stream);
 
 		input.connect(context.destination);
 
-
+		if (biquad_bypass)
+		{
+			stream.stop();
+		}
 
 	}	// errorCallback			 
 	function onStreamError(error) {

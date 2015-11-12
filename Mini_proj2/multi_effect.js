@@ -320,7 +320,7 @@
 		
 		source.connect(biquad_onoff);
 
-		if (!biqad_bypass){
+		if (!biquad_bypass){
 		biquad_onoff.connect(biquad);
 		biquad.connect(delay_onoff);
 		}

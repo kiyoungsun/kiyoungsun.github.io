@@ -332,7 +332,6 @@
 		}
 	
 		/////////////////////////////////////////////////////
-		console.log('1');
 		source.start();
 	}
 
@@ -390,7 +389,6 @@ function toggleFilterBypass() {
 		}
 		else {
 			source.disconnect(convolver);
-			source.disconnect(dryGain);
 			reverb_bypass = true;
 		}
 	}	

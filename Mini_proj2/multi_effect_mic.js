@@ -300,12 +300,16 @@
 
 		input.connect(context.destination);
 
-		if(biquad_bypass){
-		console.log('1');
-	}
-	else{
-		console.log('2');
-	}
+		var func1 = function(){
+			if(biquad_bypass){
+			console.log('1');
+			}
+			else{
+			console.log('2');
+			}
+		}
+
+		func1
 
 
 		if (!biquad_bypass){

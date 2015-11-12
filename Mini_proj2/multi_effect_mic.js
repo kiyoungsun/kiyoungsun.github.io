@@ -294,7 +294,7 @@
 	// successCallback
 	
 
-	function onStream(stream) {
+	function onStream(stream, biquad_bypass) {
 
 		var input = context.createMediaStreamSource(stream);
 

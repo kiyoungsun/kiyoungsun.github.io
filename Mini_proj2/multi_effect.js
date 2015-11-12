@@ -304,7 +304,7 @@
 		delay_onoff.gain = 1;
 		reverb_onoff.gain = 1;
 
-		
+
 	function playSound(anybuffer) {
 		// create buffersource
 		source = context.createBufferSource();
@@ -369,7 +369,7 @@ function toggleFilterBypass() {
 		}
 		else {
 
-			biquad_onoff.disconnect(delay_off);
+			biquad_onoff.disconnect(delay_onoff);
 			biquad_onoff.connect(biquad);
 
 
@@ -381,14 +381,14 @@ function toggleFilterBypass() {
 		if ( delay_bypass ) {
 
 			delay_onoff.disconnect(delay);
-			delay_onoff.connect(converb_onoff);
+			delay_onoff.connect(reverb_onoff);
 
 
 			delay_bypass = false;
 		}
 		else {
 
-			delay_onoff.disconnect(converb_onoff);
+			delay_onoff.disconnect(reverb_onoff);
 			delay_onoff.connect(delay);
 
 			delay.connect(feedbackGain);
@@ -401,22 +401,22 @@ function toggleFilterBypass() {
 
 	function toggleReverbBypass() {
 		if ( reverb_bypass ) {
-			converb_onoff.disconnect(convolver);
-			converb_onoff.disconnect(dryGain);
+			reverb_onoff.disconnect(convolver);
+			reverb_onoff.disconnect(dryGain);
 
-			converb_onoff.connect(context.destination);
+			revreb_onoff.connect(context.destination);
 
 
 			reverb_bypass = false;
 		}
 		else {
-			converb_onoff.disconnect(context.destination);
+			reverb_onoff.disconnect(context.destination);
 
-			converb_onoff.connect(convolver);
+			reverb_onoff.connect(convolver);
 			convolver.connect(wetGain);
 			wetGain.connect(context.destination);
 
-			converb_onoff.connect(dryGain);
+			reverb_onoff.connect(dryGain);
 			dryGain.connect(context.destination);
 			reverb_bypass = true;
 		}

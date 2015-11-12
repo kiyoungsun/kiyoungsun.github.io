@@ -279,7 +279,59 @@
     } 
 
 	///////////////////////////////////////////
+		var biquad_onoff = context.createGain();
+		var delay_onoff = context.createGain();
+		var reverb_onoff = context.createGain();
+
+		biquad_onoff.gain = 1;
+		delay_onoff.gain = 1;
+		reverb_onoff.gain = 1;
+
+
+	function playSound() {
+		/////////////////////////////////////////////////////
+		// TODO: cascade three audio effect units
+		// 	Biquad --> Delay (w/feedback) --> Reverb   
+		//
+		// fill out the following part
+		/////////////////////////////////////////////////////
+		
+		if (!biquad_bypass){
+		biquad_onoff.connect(biquad);
+		biquad.connect(delay_onoff);
+		}
+		else{
+		biquad_onoff.connect(delay_onoff)
+		}
+
+		if (!delay_bypass){
+		delay_onoff.connect(delay);
+		delay.connect(reverb_onoff);
+		delay.connect(feedbackGain);
+		feedbackGain.connect(delay);
+
+		}
+		else {
+		delay_onoff.connect(reverb_onoff);
+		}
+
+		if (!reverb_bypass){
+		reverb_onoff.connect(convolver);
+		convolver.connect(wetGain);
+		wetGain.connect(context.destination);
+		}
+		else{
+		reverb_onoff.connect(context.destination);
+		}
+
+		reverb_onoff.connect(dryGain);
+		dryGain.connect(context.destination);
+		
 	
+		/////////////////////////////////////////////////////
+		source.start();
+	}
+
 	if (!navigator.getUserMedia)
 		navigator.getUserMedia = (navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia);
 							  
@@ -298,14 +350,12 @@
 
 		var input = context.createMediaStreamSource(stream);
 
-		input.connect(context.destination);
+		input.connect(biquad_onoff);
 
-		if (biquad_bypass)
-		{
-			stream.stop();
-		}
+		playSound();
+	}	
 
-	}	// errorCallback			 
+	// errorCallback			 
 	function onStreamError(error) {
 		console.error('Error getting microphone', error);
 	}

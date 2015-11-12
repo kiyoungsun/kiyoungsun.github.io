@@ -5,6 +5,15 @@
 	var myAudioBuffer = null;
 	var loopPlayBack = false;
 	
+
+	var biquad_onoff = context.createGain();
+	var delay_onoff = context.createGain();
+	var reverb_onoff = context.createGain();
+
+	biquad_onoff.gain.value = 1;
+	delay_onoff.gain.value = 1;
+	reverb_onoff.gain.value = 1;
+
 	///////////////////////////////////////////
 	// Biquad filter default
 	var biquad_params = {
@@ -279,13 +288,6 @@
     } 
 
 	///////////////////////////////////////////
-		var biquad_onoff = context.createGain();
-		var delay_onoff = context.createGain();
-		var reverb_onoff = context.createGain();
-
-		biquad_onoff.gain.value = 1;
-		delay_onoff.gain.value = 1;
-		reverb_onoff.gain.value = 1;
 
 
 	if (!navigator.getUserMedia)
@@ -316,7 +318,7 @@
 
 
 
-	function playSound() {
+	function playSound(anybuffer) {
 		/////////////////////////////////////////////////////
 		// TODO: cascade three audio effect units
 		// 	Biquad --> Delay (w/feedback) --> Reverb   

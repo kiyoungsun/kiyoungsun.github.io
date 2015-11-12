@@ -283,9 +283,9 @@
 		var delay_onoff = context.createGain();
 		var reverb_onoff = context.createGain();
 
-		biquad_onoff.gain = 1;
-		delay_onoff.gain = 1;
-		reverb_onoff.gain = 1;
+		biquad_onoff.gain.value = 1;
+		delay_onoff.gain.value = 1;
+		reverb_onoff.gain.value = 1;
 
 
 	if (!navigator.getUserMedia)
@@ -374,7 +374,6 @@
 	
 		/////////////////////////////////////////////////////
 		source.start();
-	}
 
 
 ///////////////////////////////////////////

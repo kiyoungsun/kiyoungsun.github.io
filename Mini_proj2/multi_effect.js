@@ -308,28 +308,33 @@
 		// fill out the following part
 		/////////////////////////////////////////////////////
 
-		source.connect(context.destination);
+		var biquad_onoff = context.createGain();
+		var delay_onoff = context.createGain();
+		var reverb_onoff = context.createGain();
 
-		if (!biquad_bypass){
-			source.connect(biquad);
-			biquad.connect(context.destination);
-		}
+		biquad_onoff.gain = 1;
+		delay_onoff.gain = 1;
+		reverb_onoff.gain = 1;
 
-		if (!delay_bypass){
-			source.connect(delay);
-			delay.connect(context.destination);
-			delay.connect(feedbackGain);
-			feedbackGain.connect(delay);
-		}
+		source.connect(biquad_onoff);
 
-		if (!reverb_bypass){
-			source.connect(convolver);
-			convolver.connect(wetGain);
-			wetGain.connect(context.destination);
+		biquad_onoff.connect(biquad);
 
-			source.connect(dryGain);
-			dryGain.connect(context.destination);
-		}
+		biquad.connect(delay_onoff);
+
+		delay_onoff.connect(delay);
+		delay.connect(reverb_onoff);
+		delay.connect(feedbackGain);
+		feedbackGain.connect(delay);
+		
+
+		reverb_onoff.connect(convolver);
+		convolver.connect(wetGain);
+		wetGain.connect(context.destination);
+
+		reverb_onoff.connect(dryGain);
+		dryGain.connect(context.destination);
+		
 	
 		/////////////////////////////////////////////////////
 		source.start();
@@ -352,26 +357,36 @@
 
 function toggleFilterBypass() {
 		if ( biquad_bypass ) {
-			source.connect(biquad);
-			biquad.connect(context.destination);
+
+			biquad_onoff.connect(delay_onoff);
+			biquad_onoff.disconnect(biquad);
+
 			biquad_bypass = false;
 		}
 		else {
-			source.disconnect(biquad);
+
+			biquad_onoff.connect(biquad);
+			biquad_onoff.disconnect(delay_off);
+
 			biquad_bypass = true;
 		}
 	}	
 
 	function toggleDelayBypass() {
 		if ( delay_bypass ) {
-			source.connect(delay);
-			delay.connect(context.destination);
-			delay.connect(feedbackGain);
-			feedbackGain.connect(delay);
+
+			delay_onoff.connect(converb_onoff);
+			delay_onoff.disconnect(delay);
+
 			delay_bypass = false;
 		}
 		else {
-			source.disconnect(delay);
+
+			delay_onoff.connect(delay);
+			delay_onoff.disconnect(converb_onoff);
+			delay.connect(feedbackGain);
+			feedbackGain.connect(delay);
+
 			delay_bypass = true;
 		}
 		console.log(delay_bypass);
@@ -379,16 +394,19 @@ function toggleFilterBypass() {
 
 	function toggleReverbBypass() {
 		if ( reverb_bypass ) {
-			source.connect(convolver);
-			convolver.connect(wetGain);
-			wetGain.connect(context.destination);
+			converb_onoff.connect(context.destination);
+			converb_onoff.disconnect(convolver);
+			converb_onoff.disconnect(dryGain);
 
-			source.connect(dryGain);
-			dryGain.connect(context.destination);
 			reverb_bypass = false;
 		}
 		else {
-			source.disconnect(convolver);
+			converb_onoff.connect(convolver);
+			convolver.connect(wetGain);
+			wetGain.connect(context.destination);
+
+			converb_onoff.connect(dryGain);
+			dryGain.connect(context.destination);
 			reverb_bypass = true;
 		}
 	}	

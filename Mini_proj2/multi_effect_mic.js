@@ -342,13 +342,14 @@
 
 	function toggleDelayBypass() {
 		if ( delay_bypass ) {
-			input.connect(delay);
-			delay.connect(context.destination);
-			delay.connect(feedbackGain);
-			feedbackGain.connect(delay);
+			//input.connect(delay);
+			//delay.connect(context.destination);
+			//delay.connect(feedbackGain);
+			//feedbackGain.connect(delay);
 			delay_bypass = false;
 		}
 		else {
+			//input.disconnect(delay);
 			delay_bypass = true;
 		}
 		console.log(delay_bypass);

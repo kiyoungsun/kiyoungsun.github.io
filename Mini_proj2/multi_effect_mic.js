@@ -323,9 +323,7 @@
 		//
 		// fill out the following part
 		/////////////////////////////////////////////////////
-		
-		source.connect(biquad_onoff);
-		
+				
 		biquad_onoff.connect(biquad);
 		biquad.connect(delay_onoff);
 

@@ -299,9 +299,26 @@
 		var input = context.createMediaStreamSource(stream);
 
 		input.connect(context.destination);
-		
+
 		if (!biquad_bypass){
-			console.log('1');
+			input.connect(biquad);
+			biquad.connect(context.destination);				
+		}
+
+		if (!delay_bypass){
+			input.connect(delay);
+			delay.connect(context.destination);
+			delay.connect(feedbackGain);
+			feedbackGain.connect(delay);
+		}
+
+		if(!reverb_bypass){
+			input.connect(convolver);
+			convolver.connect(wetGain);
+			wetGain.connect(context.destination);
+
+			input.connect(dryGain);
+			dryGain.connect(context.destination);
 		}
 
 	}	// errorCallback			 

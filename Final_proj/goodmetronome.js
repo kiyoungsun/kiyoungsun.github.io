@@ -152,6 +152,6 @@ function init(){
 
     while (true){
         requestAnimFrame(draw);	// start the drawing loop.
-}
+}}
 
 window.addEventListener("load", init );

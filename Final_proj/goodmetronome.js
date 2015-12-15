@@ -115,8 +115,10 @@ function draw() {
         for (var i=0; i<16; i++) {
             canvasContext.fillStyle = ( currentNote == i ) ? 
                 ((currentNote%4 == 0)?"red":"blue") : "black";
-            canvasContext.fillRect( x * (i+1), x, x/2, x/2 );
+            
         }
+
+        canvasContext.fillRect( x * (1), x, x/2, x/2 );
         last16thNoteDrawn = currentNote;
     }
 
@@ -132,10 +134,10 @@ function init(){
     canvasContext = canvas.getContext( '2d' );
     canvas.width = window.innerWidth; 
     canvas.height = window.innerHeight; 
-    canvas.fillStyle = "orange";
+    canvas.fillStyle = "green";
     document.body.appendChild( container );
     container.appendChild(canvas);	
-    canvasContext.strokeStyle = "orange";
+    canvasContext.strokeStyle = "green";
     canvasContext.lineWidth = 2;
 
     window.AudioContext = window.AudioContext || window.webkitAudioContext;

@@ -22,7 +22,11 @@ var notesInQueue = [];      // the notes that have been put into the web audio,
 
     canvas = document.createElement( 'canvas' );
     canvasContext = canvas.getContext( '2d' );
-
+        canvas.width = window.innerWidth; 
+    canvas.height = window.innerHeight; 
+    canvas.fillStyle = "#ffffff";
+    //canvasContext.strokeStyle = "#ffffff";
+    //canvasContext.lineWidth = 2;
     var ball = {
     x: 5,
     y: 5,
@@ -158,12 +162,8 @@ function init(){
 
 
 
-    canvas.width = window.innerWidth; 
-    canvas.height = window.innerHeight; 
-    canvas.fillStyle = "#ffffff";
-    //canvasContext.strokeStyle = "#ffffff";
-    //canvasContext.lineWidth = 2;
 
+    ball.draw();
     window.AudioContext = window.AudioContext || window.webkitAudioContext;
     audioContext = new AudioContext();
 

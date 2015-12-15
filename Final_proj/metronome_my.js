@@ -19,6 +19,28 @@ var last16thNoteDrawn = -1; // the last "box" we drew on the screen
 var notesInQueue = [];      // the notes that have been put into the web audio,
                             // and may or may not have played yet. {note, time}
 
+
+    canvas = document.createElement( 'canvas' );
+    canvasContext = canvas.getContext( '2d' );
+
+    var ball = {
+    x: 100,
+    y: 100,
+    vx: 5,
+    vy: 2,
+    radius: 25,
+      color: 'blue',
+      draw: function() {
+        canvasContext.beginPath();
+        canvasContext.arc(this.x, this.y, this.radius, 0, Math.PI*2, true);
+        canvasContext.closePath();
+        canvasContext.fillStyle = this.color;
+        canvasContext.fill();
+      }
+    };
+
+
+
 // First, let's shim the requestAnimationFrame API, with a setTimeout fallback
 window.requestAnimFrame = (function(){
     return  window.requestAnimationFrame ||
@@ -133,24 +155,8 @@ function draw() {
 }
 
 function init(){
-    canvas = document.createElement( 'canvas' );
-    canvasContext = canvas.getContext( '2d' );
 
-    var ball = {
-    x: 100,
-    y: 100,
-    vx: 5,
-    vy: 2,
-    radius: 25,
-      color: 'blue',
-      draw: function() {
-        canvasContext.beginPath();
-        canvasContext.arc(this.x, this.y, this.radius, 0, Math.PI*2, true);
-        canvasContext.closePath();
-        canvasContext.fillStyle = this.color;
-        canvasContext.fill();
-      }
-    };
+
 
     canvas.width = window.innerWidth; 
     canvas.height = window.innerHeight; 

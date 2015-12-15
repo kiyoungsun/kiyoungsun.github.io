@@ -125,7 +125,7 @@ var position = 0;
     }
 
     // set up to draw again
-    requestAnimFrame(draw);
+ //   requestAnimFrame(draw);
 }
 
 function init(){

@@ -3,7 +3,7 @@ var isPlaying = false;		// Are we currently playing?
 var startTime;				// The start time of the entire sequence.
 var current16thNote;		// What note is currently last scheduled?
 var tempo = 120.0;			// tempo (in beats per minute)
-var lookahead = 10000.0;		// How frequently to call scheduling function 
+var lookahead = 1.0;		// How frequently to call scheduling function 
 							//(in milliseconds)
 var scheduleAheadTime = 0.1;	// How far ahead to schedule audio (sec)
 							// This is calculated from lookahead, and overlaps 

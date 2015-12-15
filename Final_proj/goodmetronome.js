@@ -125,7 +125,7 @@ var position = 0;
     }
 
     // set up to draw again
- //   requestAnimFrame(draw);
+   requestAnimFrame(draw);
 }
 
 function init(){
@@ -153,9 +153,5 @@ function init(){
         requestAnimFrame(draw);	// start the drawing loop.
 }
 
-//window.addEventListener("load", init );
-
-canvas.addEventListener('mouseover', function(e){
-  requestAnimFrame(draw)
-});
+window.addEventListener("load", init );
 

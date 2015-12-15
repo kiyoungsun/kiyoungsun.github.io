@@ -24,8 +24,8 @@ var notesInQueue = [];      // the notes that have been put into the web audio,
     canvasContext = canvas.getContext( '2d' );
 
     var ball = {
-    x: 100,
-    y: 100,
+    x: 5,
+    y: 5,
     vx: 5,
     vy: 2,
     radius: 25,

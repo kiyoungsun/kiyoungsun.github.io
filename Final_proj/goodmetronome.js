@@ -150,7 +150,8 @@ function init(){
     window.onorientationchange = resetCanvas;
     window.onresize = resetCanvas;
 
-    requestAnimFrame(draw);	// start the drawing loop.
+    while (true){
+        requestAnimFrame(draw);	// start the drawing loop.
 }
 
 window.addEventListener("load", init );

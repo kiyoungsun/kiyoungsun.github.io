@@ -27,7 +27,7 @@ window.requestAnimFrame = (function(){
     window.oRequestAnimationFrame ||
     window.msRequestAnimationFrame ||
     function( callback ){
-        window.setTimeout(callback, 1000 / 60);
+        window.setTimeout(callback, 10 / 60);
     };
 })();
 

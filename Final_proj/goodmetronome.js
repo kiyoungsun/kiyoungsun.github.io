@@ -132,7 +132,7 @@ function init(){
     canvasContext = canvas.getContext( '2d' );
     canvas.width = window.innerWidth; 
     canvas.height = window.innerHeight; 
-    canvas.fillStyle = "#FF0000";
+    canvas.fillStyle = "#ffffff";
     document.body.appendChild( container );
     container.appendChild(canvas);	
     canvasContext.strokeStyle = "#ffffff";

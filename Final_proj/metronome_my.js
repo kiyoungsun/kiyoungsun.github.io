@@ -19,21 +19,7 @@ var last16thNoteDrawn = -1;	// the last "box" we drew on the screen
 var notesInQueue = [];      // the notes that have been put into the web audio,
                             // and may or may not have played yet. {note, time}
 
-var ball = {
-  x: 100,
-  y: 100,
-  vx: 5,
-  vy: 2,
-  radius: 25,
-  color: 'blue',
-  draw: function() {
-    ctx.beginPath();
-    ctx.arc(this.x, this.y, this.radius, 0, Math.PI*2, true);
-    ctx.closePath();
-    ctx.fillStyle = this.color;
-    ctx.fill();
-  }
-};
+
 
 
 // First, let's shim the requestAnimationFrame API, with a setTimeout fallback
@@ -155,6 +141,21 @@ function init(){
     window.AudioContext = window.AudioContext || window.webkitAudioContext;
     audioContext = new AudioContext();
 
+    var ball = {
+  x: 100,
+  y: 100,
+  vx: 5,
+  vy: 2,
+  radius: 25,
+  color: 'blue',
+  draw: function() {
+    canvasContext.beginPath();
+    canvasContext.arc(this.x, this.y, this.radius, 0, Math.PI*2, true);
+    canvasContext.closePath();
+    canvasContext.fillStyle = this.color;
+    canvasContext.fill();
+  }
+};
     ball.draw();
     ball.x += ball.vx;
     ball.y += ball.vy;

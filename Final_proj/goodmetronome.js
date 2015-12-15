@@ -109,16 +109,16 @@ function draw() {
     }
 
     // We only need to draw if the note has moved.
-    if (last16thNoteDrawn != currentNote) {
-        var x = Math.floor( canvas.width / 18 );
-        canvasContext.clearRect(0,0,canvas.width, canvas.height); 
-        for (var i=0; i<16; i++) {
-            canvasContext.fillStyle = ( currentNote == i ) ? 
-                ((currentNote%4 == 0)?"red":"blue") : "black";
-            canvasContext.fillRect( x * (i+1), x, x/2, x/2 );
-        }
-        last16thNoteDrawn = currentNote;
-    }
+    //if (last16thNoteDrawn != currentNote) {
+    //    var x = Math.floor( canvas.width / 18 );
+    //    canvasContext.clearRect(0,0,canvas.width, canvas.height); 
+    //    for (var i=0; i<16; i++) {
+    //        canvasContext.fillStyle = ( currentNote == i ) ? 
+    //            ((currentNote%4 == 0)?"red":"blue") : "black";
+    //        canvasContext.fillRect( x * (i+1), x, x/2, x/2 );
+    //    }
+    //    last16thNoteDrawn = currentNote;
+    //}
 
     // set up to draw again
     requestAnimFrame(draw);

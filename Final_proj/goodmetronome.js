@@ -94,7 +94,6 @@ function resetCanvas (e) {
     // resize the canvas - but remember - this clears the canvas too.
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
-    canvas.fillStyle = "#FF0000";
 
     //make sure we scroll to the top left.
     window.scrollTo(0,0); 
@@ -133,6 +132,7 @@ function init(){
     canvasContext = canvas.getContext( '2d' );
     canvas.width = window.innerWidth; 
     canvas.height = window.innerHeight; 
+    canvas.fillStyle = "#FF0000";
     document.body.appendChild( container );
     container.appendChild(canvas);	
     canvasContext.strokeStyle = "#ffffff";

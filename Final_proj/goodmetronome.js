@@ -115,7 +115,7 @@ function draw() {
         for (var i=0; i<16; i++) {
             canvasContext.fillStyle = ( currentNote == i ) ? 
                 ((currentNote%4 == 0)?"red":"blue") : "black";
-    /        canvasContext.fillRect( x * (i+1), x, x/2, x/2 );
+            canvasContext.fillRect( x * (i+1), x, x/2, x/2 );
         }
         last16thNoteDrawn = currentNote;
     }

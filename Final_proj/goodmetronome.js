@@ -135,7 +135,7 @@ function init(){
     canvas.fillStyle = "orange";
     document.body.appendChild( container );
     container.appendChild(canvas);	
-    canvasContext.strokeStyle = "#ffffff";
+    canvasContext.strokeStyle = "orange";
     canvasContext.lineWidth = 2;
 
     window.AudioContext = window.AudioContext || window.webkitAudioContext;

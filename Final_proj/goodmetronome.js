@@ -108,6 +108,7 @@ function draw() {
         notesInQueue.splice(0,1);   // remove note from queue
     }
 
+var position = 0;
     // We only need to draw if the note has moved.
     if (last16thNoteDrawn != currentNote) {
         var x = Math.floor( canvas.width / 18 );
@@ -118,7 +119,8 @@ function draw() {
             
         }
 
-        canvasContext.fillRect( x * (1), x, x/2, x/2 );
+        canvasContext.fillRect( position, x, x/2, x/2 );
+        position = position + 5;
         last16thNoteDrawn = currentNote;
     }
 

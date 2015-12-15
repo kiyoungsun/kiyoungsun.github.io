@@ -19,27 +19,6 @@ var last16thNoteDrawn = -1; // the last "box" we drew on the screen
 var notesInQueue = [];      // the notes that have been put into the web audio,
                             // and may or may not have played yet. {note, time}
 
-
-var canvas = document.getElementById('canvas');
-var ctx = canvas.getContext('2d');
-var raf;
-
-var ball = {
-  x: 100,
-  y: 100,
-  vx: 5,
-  vy: 2,
-  radius: 25,
-  color: 'blue',
-  draw: function() {
-    ctx.beginPath();
-    ctx.arc(this.x, this.y, this.radius, 0, Math.PI*2, true);
-    ctx.closePath();
-    ctx.fillStyle = this.color;
-    ctx.fill();
-  }
-};
-
 // First, let's shim the requestAnimationFrame API, with a setTimeout fallback
 window.requestAnimFrame = (function(){
     return  window.requestAnimationFrame ||
@@ -130,30 +109,54 @@ function draw() {
     }
 
     // We only need to draw if the note has moved.
-    if (last16thNoteDrawn != currentNote) {
-        ctx.clearRect(0,0, canvas.width, canvas.height);
+ //   if (last16thNoteDrawn != currentNote) {
+ //       var x = Math.floor( canvas.width / 18 );
+  //      canvasContext.clearRect(0,0,canvas.width, canvas.height); 
+  //      for (var i=0; i<16; i++) {
+   //         canvasContext.fillStyle = ( currentNote == i ) ? 
+   //             ((currentNote%4 == 0)?"red":"blue") : "black";
+  //          canvasContext.fillRect( x * (i+1), x, x/2, x/2 );
+  //      }
+  //      last16thNoteDrawn = currentNote;
+ //   }
     ball.draw();
-      ball.x += ball.vx;
+    ball.x += ball.vx;
     ball.y += ball.vy;
-    raf = window.requestAnimationFrame(draw);
-
+    if (ball.y + ball.vy > canvas.height || ball.y + ball.vy < 0) {
+      ball.vy = -ball.vy;
+    }
+    if (ball.x + ball.vx > canvas.width || ball.x + ball.vx < 0) {
+      ball.vx = -ball.vx;
+    }
     // set up to draw again
     requestAnimFrame(draw);
 }
 
 function init(){
-    var container = document.createElement( 'div' );
-
-    container.className = "container";
     canvas = document.createElement( 'canvas' );
     canvasContext = canvas.getContext( '2d' );
+
+    var ball = {
+    x: 100,
+    y: 100,
+    vx: 5,
+    vy: 2,
+    radius: 25,
+      color: 'blue',
+      draw: function() {
+        canvasContext.beginPath();
+        canvasContext.arc(this.x, this.y, this.radius, 0, Math.PI*2, true);
+        canvasContext.closePath();
+        canvasContext.fillStyle = this.color;
+        canvasContext.fill();
+      }
+    };
+
     canvas.width = window.innerWidth; 
     canvas.height = window.innerHeight; 
     canvas.fillStyle = "#ffffff";
-    document.body.appendChild( container );
-    container.appendChild(canvas);  
-    canvasContext.strokeStyle = "#ffffff";
-    canvasContext.lineWidth = 2;
+    //canvasContext.strokeStyle = "#ffffff";
+    //canvasContext.lineWidth = 2;
 
     window.AudioContext = window.AudioContext || window.webkitAudioContext;
     audioContext = new AudioContext();

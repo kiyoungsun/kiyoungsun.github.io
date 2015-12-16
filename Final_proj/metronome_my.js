@@ -1,7 +1,7 @@
 var audioContext = null;
 var isPlaying = false;      // Are we currently playing?
 var startTime;              // The start time of the entire sequence.
-var current16thNote;        // What note is currently last scheduled?
+var currentLastNote;        // What note is currently last scheduled?
 var tempo = 120.0;          // tempo (in beats per minute)
 var lookahead = 25.0;       // How frequently to call scheduling function 
                             //(in milliseconds)
@@ -10,6 +10,7 @@ var scheduleAheadTime = 0.1;    // How far ahead to schedule audio (sec)
                             // with next interval (in case the timer is late)
 var nextNoteTime = 0.0;     // when the next note is due.
 var noteResolution = 0;     // 0 == 16th, 1 == 8th, 2 == quarter note
+var tempoBase = 0;          // 0 == 4 Beats, 1 == 3 Beats
 var noteLength = 0.05;      // length of "beep" (in seconds)
 var intervalID = 0;         // setInterval identifier.
 
@@ -18,35 +19,9 @@ var canvas,                 // the canvas element
 var last16thNoteDrawn = -1; // the last "box" we drew on the screen
 var notesInQueue = [];      // the notes that have been put into the web audio,
                             // and may or may not have played yet. {note, time}
+var secondsPerBeat;
 
-
-    canvas = document.createElement( 'canvas' );
-    canvasContext = canvas.getContext( '2d' );
-    canvas.width = window.innerWidth; 
-    canvas.height = window.innerHeight; 
-    canvas.fillStyle = "#ffffff";
-
-    var raf;
-    //canvasContext.strokeStyle = "#ffffff";
-    //canvasContext.lineWidth = 2;
-    var ball = {
-    x: 5,
-    y: 5,
-    vx: 5,
-    vy: 2,
-    radius: 25,
-      color: 'blue',
-      draw: function() {
-        canvasContext.beginPath();
-        canvasContext.arc(this.x, this.y, this.radius, 0, Math.PI*2, true);
-        canvasContext.closePath();
-        canvasContext.fillStyle = this.color;
-        canvasContext.fill();
-      }
-    };
-
-
-
+var ballTime = 0;
 // First, let's shim the requestAnimationFrame API, with a setTimeout fallback
 window.requestAnimFrame = (function(){
     return  window.requestAnimationFrame ||
@@ -61,13 +36,24 @@ window.requestAnimFrame = (function(){
 
 function nextNote() {
     // Advance current note and time by a 16th note...
-    var secondsPerBeat = 60.0 / tempo;  // Notice this picks up the CURRENT 
-                                        // tempo value to calculate beat length.
-    nextNoteTime += 0.25 * secondsPerBeat;  // Add beat length to last beat time
+     secondsPerBeat = 60.0 / tempo;  // Notice this picks up the CURRENT 
+     
+    if (tempoBase == 0)                                   // tempo value to calculate beat length.
+        nextNoteTime += 0.25 * secondsPerBeat;  // Add beat length to last beat time
+    else
+        nextNoteTime += 1/3 * secondsPerBeat;
 
-    current16thNote++;  // Advance the beat number, wrap to zero
-    if (current16thNote == 16) {
-        current16thNote = 0;
+    currentLastNote++;  // Advance the beat number, wrap to zero
+
+    if (tempoBase == 0){
+        if (currentLastNote == 16){
+            currentLastNote = 0;
+        }
+    }
+    else{
+        if (currentLastNote ==12){
+            currentLastNote = 0;
+        }
     }
 }
 
@@ -79,16 +65,30 @@ function scheduleNote( beatNumber, time ) {
         return; // we're not playing non-8th 16th notes
     if ( (noteResolution==2) && (beatNumber%4))
         return; // we're not playing non-quarter 8th notes
+    if ( (noteResolution==4) && (beatNumber%3==1))
+        return;
 
     // create an oscillator
+    console.log(beatNumber)
     var osc = audioContext.createOscillator();
     osc.connect( audioContext.destination );
-    if (! (beatNumber % 16) )   // beat 0 == low pitch
-        osc.frequency.value = 220.0;
-    else if (beatNumber % 4)    // quarter notes = medium pitch
-        osc.frequency.value = 440.0;
-    else                        // other 16th notes = high pitch
-        osc.frequency.value = 880.0;
+
+    if (tempoBase == 0){
+        if (! (beatNumber % 16) )   // beat 0 == low pitch
+            osc.frequency.value = 220.0;
+        else if (beatNumber % 4)    // quarter notes = medium pitch
+            osc.frequency.value = 440.0;
+        else                        // other 16th notes = high pitch
+            osc.frequency.value = 880.0;
+    }
+    else{
+        if (! (beatNumber % 12) )
+            osc.frequency.value = 220.0;
+        else if (beatNumber % 3)
+            osc.frequency.value = 440.0;
+        else
+            osc.frequency.value = 880.0;
+    }
 
     osc.start( time );
     osc.stop( time + noteLength );
@@ -98,59 +98,135 @@ function scheduler() {
     // while there are notes that will need to play before the next interval, 
     // schedule them and advance the pointer.
     while (nextNoteTime < audioContext.currentTime + scheduleAheadTime ) {
-        scheduleNote( current16thNote, nextNoteTime );
+        scheduleNote( currentLastNote, nextNoteTime );
         nextNote();
     }
     timerID = window.setTimeout( scheduler, lookahead );
 }
 
-function play() {
+function playToStart() {
     isPlaying = !isPlaying;
+    var image = document.getElementById('myImage');
 
     if (isPlaying) { // start playing
-        current16thNote = 0;
+        currentLastNote = 0;
         nextNoteTime = audioContext.currentTime;
         scheduler();    // kick off scheduling
-        return "stop";
+        image.src = "Final_proj/stop.png";
+        console.log('yes')
     } else {
         window.clearTimeout( timerID );
-        return "play";
+        image.src = "Final_proj/start.png";
+                console.log('no')
     }
 }
 
+function changeImage(){
+    var image = document.getElementById('myImage2');
 
+    if(noteResolution == 0){
+        image.src = 'Final_proj/8th.png';
+        noteResolution = 1;
+        tempoBase = 0;
+    }
+    else if(noteResolution == 1){
+        image.src = 'Final_proj/4th.png';
+        noteResolution = 2;
+        tempoBase = 0;
+    }
+    else if(noteResolution == 2){
+        image.src = 'Final_proj/triplet.png';
+        noteResolution = 3;
+        tempoBase = 1;
+    }
+    else if(noteResolution == 3){
+        image.src = 'Final_proj/swing.png';
+        noteResolution = 4;
+        tempoBase = 1;
+    }
+    else{
+        image.src = 'Final_proj/16th.png';
+        noteResolution = 0;
+        tempoBase = 0;
+    }
 
+}
 
-function draw() {
+function resetCanvas (e) {
+    // resize the canvas - but remember - this clears the canvas too.
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
 
-//  var currentNote = last16thNoteDrawn;
-// var currentTime = audioContext.currentTime;
-
-  canvasContext.clearRect(0,0, canvas.width, canvas.height);
-  ball.draw();
-  ball.x += ball.vx;
-  ball.y += ball.vy;
- raf = window.requestAnimationFrame(draw);
+    //make sure we scroll to the top left.
+    window.scrollTo(0,0); 
 }
 
 
+    var pos = 0;
+    var vel = 5;
+
+function draw() {
+    var currentNote = last16thNoteDrawn;
+    var currentTime = audioContext.currentTime;
+
+    while (notesInQueue.length && notesInQueue[0].time < currentTime) {
+        currentNote = notesInQueue[0].note;
+        notesInQueue.splice(0,1);   // remove note from queue
+    }
+    var acc = 2 * canvas.width / (secondsPerBeat * secondsPerBeat);
+    var acc = 10;
+    // We only need to draw if the note has moved.
+    if (last16thNoteDrawn != currentNote) {
+        var x = Math.floor( canvas.width / 18 );
+        canvasContext.clearRect(0,0,canvas.width, canvas.height);
+
+        if(isPlaying){
+
+            canvasContext.beginPath();
+            canvasContext.arc(pos, 50, 10, 0, Math.PI*2, true);
+            canvasContext.closePath();
+
+            canvasContext.fill();
+            pos += vel;
+
+            if (pos + vel > canvas.width || pos + vel < 0) {
+                vel = - vel;
+            }
+
+            //canvasContext.fillStyle = 'rgba(255,255,255,0.3)';
+            canvasContext.fill();
+
+        }
+
+     //   last16thNoteDrawn = currentNote;
+    }
+
+    // set up to draw again
+    requestAnimFrame(draw);
+}
 
 function init(){
+    var container = document.createElement( 'div' );
+
+    container.className = "container";
+    canvas = document.createElement( 'canvas' );
+    canvasContext = canvas.getContext( '2d' );
+    canvas.width = 100; 
+    canvas.height = window.innerHeight; 
+    document.body.appendChild( container );
+    container.appendChild(canvas);  
+    canvasContext.strokeStyle = "#ffffff";
+    canvasContext.lineWidth = 2;
 
     window.AudioContext = window.AudioContext || window.webkitAudioContext;
     audioContext = new AudioContext();
 
     // if we wanted to load audio files, etc., this is where we should do it.
 
+    window.onorientationchange = resetCanvas;
+    window.onresize = resetCanvas;
 
-
-    ball.draw();
-     raf = window.requestAnimationFrame(draw); // start the drawing loop.
+    requestAnimFrame(draw); // start the drawing loop.
 }
 
-console.log("yeah")
 window.addEventListener("load", init );
-
-while (isPlaying){
-raf = window.requestAnimationFrame(draw);
-}

@@ -146,6 +146,7 @@ var ball_6 = {
 function animate(){
     ctx.clearRect(0,0, canvas.width, canvas.height);
 
+
     if (tempoBase == 0){
 
         if (noteResolution == 0){
@@ -425,6 +426,10 @@ audioContext = new AudioContext();
 
 function nextNote() {
     // Advance current note and time by a 16th note...
+     if (count > 5)
+        tempo = Math.round(bpmAvg * 100) / 100;
+
+
      secondsPerBeat = 60.0 / tempo;  // Notice this picks up the CURRENT 
      
     if (tempoBase == 0)                                   // tempo value to calculate beat length.
@@ -596,6 +601,47 @@ function changeImage(){
 }
 }
 
-    // if we wanted to load audio files, etc., this is where we should do it.
+////////////////////////////BPM counting Part/////////////////////////
 
-    //requestAnimFrame(draw); // start the drawing loop.
+var count = 0;
+var msecsFirst = 0;
+var msecsPrevious = 0;
+
+function ResetCount()
+  {
+  count = 0;
+  document.TAP_DISPLAY.T_AVG.value = "";
+  document.TAP_DISPLAY.T_TAP.value = "";
+  document.TAP_DISPLAY.T_RESET.blur();
+  }
+
+function TapForBPM(e)
+  {
+  document.TAP_DISPLAY.T_WAIT.blur();
+  timeSeconds = new Date;
+  msecs = timeSeconds.getTime();
+  if ((msecs - msecsPrevious) > 1000 * document.TAP_DISPLAY.T_WAIT.value)
+    {
+    count = 0;
+    }
+
+  if (count == 0)
+    {
+    document.TAP_DISPLAY.T_AVG.value = "First Beat";
+    document.TAP_DISPLAY.T_TAP.value = "First Beat";
+    msecsFirst = msecs;
+    count = 1;
+    }
+  else
+    {
+    bpmAvg = 60000 * count / (msecs - msecsFirst);
+    document.TAP_DISPLAY.T_AVG.value = Math.round(bpmAvg * 100) / 100;
+    document.TAP_DISPLAY.T_WHOLE.value = Math.round(bpmAvg);
+    count++;
+    document.TAP_DISPLAY.T_TAP.value = count;
+    }
+  msecsPrevious = msecs;
+  return true;
+  }
+document.onkeypress = TapForBPM;
+

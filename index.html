@@ -11,10 +11,55 @@
     <div id="controls">
       <div><img id="myImage" onclick="playToStart()" src="Final_proj/start.png" width="90" height"45">
 
-      <div id="tempoBox">Tempo: <span id="showTempo">80</span>BPM <input id="tempo" type="range" min="30.0" max="160.0" step="1" value="80" style="height: 20px; width: 200px" onInput="tempo = event.target.value; document.getElementById('showTempo').innerText=tempo;"></div>
-              <div><img id="myImage2" onclick="changeImage()" src="Final_proj/16th.png" width="90" height"45"></div>
-                 <canvas id="canvas" width="400" height="300"></canvas>
-    </div>
+      <div id="tempoBox">1. Tempo settting using a slidebar: <span id="showTempo">80</span>BPM <input id="tempo" type="range" min="30.0" max="160.0" step="1" value="80" style="height: 20px; width: 200px" onInput="tempo = event.target.value; document.getElementById('showTempo').innerText=tempo;"></div>
+ 
+  </div>
+
+
+<p>2. Tempo setting using tapping (Use any key to tap and measure BPM)
+<table border=0><tr>
+<form name="TAP_DISPLAY">
+<td align=center><table border=0 cellpadding=3 cellspacing=0 bgcolor="#666666"><tr>
+<td><table border=0 cellpadding=4 cellspacing=0 bgcolor="#CCCCCC"><tr>
+<td> </td>
+<td align=right><font color="#000000"><tt>Average BPM</tt>
+<input readonly name="T_AVG" size=10></td>
+<td> </td>
+</tr><tr>
+<td> </td>
+<td align=right><font color="#000000"><tt>Nearest Whole</tt>
+<input readonly name="T_WHOLE" size=10></td>
+<td> </td>
+</tr><tr>
+<td> </td>
+<td align=right><font color="#000000"><tt>Timing Taps</tt>
+<input readonly name="T_TAP" size=10></td>
+<td> </td>
+</tr></table></td></tr></table></td>
+</tr><tr>
+<td>
+Pause
+<select name="T_WAIT">
+  <option value="1">1</option>
+  <option value="2" SELECTED>2</option>
+  <option value="3">3</option>
+  <option value="4">4</option>
+  <option value="5">5</option>
+</select>
+second(s) to re-set the tempo using tapping any key
+
+<p>* Press <input type="button" name="T_RESET" value="RESET" onclick="ResetCount()">
+button to start again</td>
+</form></tr>
+<td> </td>
+</tr></table>
+
+
+
+
+
+      Resolution: <div><img id="myImage2" onclick="changeImage()" src="Final_proj/16th.png" width="90" height"45"></div>
+      <canvas id="canvas" width="400" height="300"></canvas></div>
 
    </body>
        <link rel="stylesheet" href="Final_proj/metronome.css">

@@ -17,3 +17,6 @@
 	width: 30px; 
 }
 
+canvas {
+    border-style: solid;
+}

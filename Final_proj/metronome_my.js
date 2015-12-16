@@ -15,13 +15,14 @@ var noteLength = 0.05;      // length of "beep" (in seconds)
 var intervalID = 0;         // setInterval identifier.
 
 var canvas,                 // the canvas element
-    canvasContext;          // canvasContext is the canvas' context 2D
+    ctx;          // ctx is the canvas' context 2D
 var last16thNoteDrawn = -1; // the last "box" we drew on the screen
 var notesInQueue = [];      // the notes that have been put into the web audio,
                             // and may or may not have played yet. {note, time}
 var secondsPerBeat;
-
-var ballTime = 0;
+var currentLastNote_temp;
+var afterTime = 0;
+var time_diff = 0;
 // First, let's shim the requestAnimationFrame API, with a setTimeout fallback
 window.requestAnimFrame = (function(){
     return  window.requestAnimationFrame ||
@@ -33,6 +34,394 @@ window.requestAnimFrame = (function(){
         window.setTimeout(callback, 1000 / 60);
     };
 })();
+
+var canvas = document.getElementById('canvas');
+var ctx = canvas.getContext('2d');
+var raf;
+var running = false;
+
+var ball_1 = {
+  x: 0,
+  y: canvas.height / 2,
+  vx: 0,
+  vy: 0,
+  radius: 20,
+  color: 'red',
+  dir : 0,
+  draw: function() {
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.radius, 0, Math.PI*2, true);
+    ctx.closePath();
+    ctx.fillStyle = this.color;
+    ctx.fill();
+  }
+};
+
+var ball_2 = {
+
+  x: canvas.width / 8,
+  y: canvas.height / 2,
+  vx: 0,
+  vy: 0,
+  radius: 20,
+  color: 'black',
+    dir : 1,
+  draw: function() {
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.radius, 0, Math.PI*2, true);
+    ctx.closePath();
+    ctx.fillStyle = this.color;
+    ctx.fill();
+  }
+};
+
+var ball_3 = {
+  x: canvas.width / 8 * 2,
+  y: canvas.height / 2,
+  vx: 0,
+  vy: 0,
+  radius: 20,
+  color: 'black',
+    dir : 1,
+  draw: function() {
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.radius, 0, Math.PI*2, true);
+    ctx.closePath();
+    ctx.fillStyle = this.color;
+    ctx.fill();
+  }
+};
+
+var ball_4 = {
+  x: canvas.width / 8 * 3,
+  y: canvas.height / 2,
+  vx: 0,
+  vy: 0,
+  radius: 20,
+  color: 'black',
+    dir : 1,
+  draw: function() {
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.radius, 0, Math.PI*2, true);
+    ctx.closePath();
+    ctx.fillStyle = this.color;
+    ctx.fill();
+  }
+};
+
+var ball_5 = {
+  x: canvas.width / 6 * 1,
+  y: canvas.height / 2,
+  vx: 0,
+  vy: 0,
+  radius: 20,
+  color: 'black',
+    dir : 1,
+  draw: function() {
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.radius, 0, Math.PI*2, true);
+    ctx.closePath();
+    ctx.fillStyle = this.color;
+    ctx.fill();
+  }
+};
+
+var ball_6 = {
+  x: canvas.width / 6 * 2,
+  y: canvas.height / 2,
+  vx: 0,
+  vy: 0,
+  radius: 20,
+  color: 'black',
+    dir : 1,
+  draw: function() {
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.radius, 0, Math.PI*2, true);
+    ctx.closePath();
+    ctx.fillStyle = this.color;
+    ctx.fill();
+  }
+};
+
+function animate(){
+    ctx.clearRect(0,0, canvas.width, canvas.height);
+
+    if (tempoBase == 0){
+
+        if (noteResolution == 0){
+            ball_1.draw();
+            ball_2.draw();
+            ball_3.draw();
+            ball_4.draw();
+
+            if (ball_1.x > canvas.width || ball_1.x < 0){
+                if (ball_1.dir == 0)
+                    ball_1.dir = 1;
+                else
+                    ball_1.dir = 0;
+            }
+            if (ball_2.x > canvas.width || ball_2.x < 0){
+                if (ball_2.dir == 0)
+                    ball_2.dir = 1;
+                else
+                    ball_2.dir = 0;
+            }
+            if (ball_3.x > canvas.width || ball_3.x < 0){
+                if (ball_3.dir == 0)
+                    ball_3.dir = 1;
+                else
+                    ball_3.dir = 0;
+            }
+            if (ball_4.x > canvas.width || ball_4.x < 0){
+                if (ball_4.dir == 0)
+                    ball_4.dir = 1;
+                else
+                    ball_4.dir = 0;
+            }
+
+            if (currentLastNote_temp - currentLastNote != 0){
+                if (currentLastNote%8==1)
+                ball_1.x = 0;
+            else if (currentLastNote%8==5)
+                ball_1.x = canvas.width;
+            else if (currentLastNote%8==2)
+                ball_2.x = 0;
+            else if (currentLastNote%8==6)
+                ball_2.x = canvas.width;
+            else if (currentLastNote%8==3)
+                ball_3.x = 0;
+            else if (currentLastNote%8==7)
+                ball_3.x = canvas.width;
+            else if (currentLastNote%8==4)
+                ball_4.x = 0;
+            else if (currentLastNote%8==0)
+                ball_4.x = canvas.width;
+            }
+
+            if (ball_1.dir == 0){
+                    ball_1.vx = canvas.width/(secondsPerBeat);}
+                else{
+                    ball_1.vx = -canvas.width/(secondsPerBeat);}
+            if (ball_2.dir == 0){
+                    ball_2.vx = canvas.width/(secondsPerBeat);}
+                else{
+                    ball_2.vx = -canvas.width/(secondsPerBeat);}
+            if (ball_3.dir == 0){
+                    ball_3.vx = canvas.width/(secondsPerBeat);}
+                else{
+                    ball_3.vx = -canvas.width/(secondsPerBeat);}
+            if (ball_4.dir == 0){
+                    ball_4.vx = canvas.width/(secondsPerBeat);}
+                else{
+                    ball_4.vx = -canvas.width/(secondsPerBeat);}
+
+            ball_1.x += ball_1.vx  * (0.0172);
+            ball_2.x += ball_2.vx  * (0.0172);
+            ball_3.x += ball_3.vx  * (0.0172);
+            ball_4.x += ball_4.vx  * (0.0172);
+
+
+            // the value should be (audioContext.currentTime - afterTime)
+            // but its value sometimes discontinuously changes
+            // so I set the value which is appropriate to my computer
+        }
+
+
+        else if (noteResolution == 1){
+            ball_1.draw();
+            ball_3.draw();
+
+            if (ball_1.x > canvas.width || ball_1.x < 0){
+                if (ball_1.dir == 0)
+                    ball_1.dir = 1;
+                else
+                    ball_1.dir = 0;
+            }
+            if (ball_3.x > canvas.width || ball_3.x < 0){
+                if (ball_3.dir == 0)
+                    ball_3.dir = 1;
+                else
+                    ball_3.dir = 0;
+            }
+            if (currentLastNote_temp - currentLastNote != 0){
+                if (currentLastNote%8==1)
+                ball_1.x = 0;
+            else if (currentLastNote%8==5)
+                ball_1.x = canvas.width;
+            else if (currentLastNote%8==3)
+                ball_3.x = 0;
+            else if (currentLastNote%8==7)
+                ball_3.x = canvas.width;
+            }
+
+            if (ball_1.dir == 0){
+                    ball_1.vx = canvas.width/(secondsPerBeat);}
+                else{
+                    ball_1.vx = -canvas.width/(secondsPerBeat);}
+            if (ball_3.dir == 0){
+                    ball_3.vx = canvas.width/(secondsPerBeat);}
+                else{
+                    ball_3.vx = -canvas.width/(secondsPerBeat);}
+
+            ball_1.x += ball_1.vx  * (0.0172);
+            ball_3.x += ball_3.vx  * (0.0172);
+
+        }
+
+        else if (noteResolution == 2){
+            ball_1.draw();
+
+            if (ball_1.x > canvas.width || ball_1.x < 0){
+                if (ball_1.dir == 0)
+                    ball_1.dir = 1;
+                else
+                    ball_1.dir = 0;
+            }
+
+            if (currentLastNote_temp - currentLastNote != 0){
+                if (currentLastNote%8==1)
+                ball_1.x = 0;
+            else if (currentLastNote%8==5)
+                ball_1.x = canvas.width;;
+            }
+
+            if (ball_1.dir == 0){
+                    ball_1.vx = canvas.width/(secondsPerBeat);}
+                else{
+                    ball_1.vx = -canvas.width/(secondsPerBeat);}
+
+            ball_1.x += ball_1.vx  * (0.0172);
+
+        }
+        }
+        else if(tempoBase == 1){
+        if (noteResolution == 3){
+            ball_1.draw();
+            ball_5.draw();
+            ball_6.draw();
+
+            if (ball_1.x > canvas.width || ball_1.x < 0){
+                if (ball_1.dir == 0)
+                    ball_1.dir = 1;
+                else
+                    ball_1.dir = 0;
+            }
+            if (ball_5.x > canvas.width || ball_5.x < 0){
+                if (ball_5.dir == 0)
+                    ball_5.dir = 1;
+                else
+                    ball_5.dir = 0;
+            }
+            if (ball_6.x > canvas.width || ball_6.x < 0){
+                if (ball_6.dir == 0)
+                    ball_6.dir = 1;
+                else
+                    ball_6.dir = 0;
+            }
+
+            if (currentLastNote_temp - currentLastNote != 0){
+                if (currentLastNote%6==1)
+                ball_1.x = 0;
+            else if (currentLastNote%6==4)
+                ball_1.x = canvas.width;
+            else if (currentLastNote%6==2)
+                ball_5.x = 0;
+            else if (currentLastNote%6==5)
+                ball_5.x = canvas.width;
+            else if (currentLastNote%6==3)
+                ball_6.x = 0;
+            else if (currentLastNote%6==0)
+                ball_6.x = canvas.width;
+            }
+
+            if (ball_1.dir == 0){
+                    ball_1.vx = canvas.width/(secondsPerBeat);}
+                else{
+                    ball_1.vx = -canvas.width/(secondsPerBeat);}
+            if (ball_5.dir == 0){
+                    ball_5.vx = canvas.width/(secondsPerBeat);}
+                else{
+                    ball_5.vx = -canvas.width/(secondsPerBeat);}
+            if (ball_6.dir == 0){
+                    ball_6.vx = canvas.width/(secondsPerBeat);}
+                else{
+                    ball_6.vx = -canvas.width/(secondsPerBeat);}
+
+            ball_1.x += ball_1.vx  * (0.0172);
+            ball_5.x += ball_5.vx  * (0.0172);
+            ball_6.x += ball_6.vx  * (0.0172);
+
+        }
+        else if (noteResolution == 4){
+            ball_1.draw();
+            ball_6.draw();
+
+            if (ball_1.x > canvas.width || ball_1.x < 0){
+                if (ball_1.dir == 0)
+                    ball_1.dir = 1;
+                else
+                    ball_1.dir = 0;
+            }
+            if (ball_6.x > canvas.width || ball_6.x < 0){
+                if (ball_6.dir == 0)
+                    ball_6.dir = 1;
+                else
+                    ball_6.dir = 0;
+            }
+
+
+            if (currentLastNote_temp - currentLastNote != 0){
+                if (currentLastNote%6==1)
+                ball_1.x = 0;
+            else if (currentLastNote%6==4)
+                ball_1.x = canvas.width;
+            else if (currentLastNote%6==3)
+                ball_6.x = 0;
+            else if (currentLastNote%6==0)
+                ball_6.x = canvas.width;}
+
+
+            if (ball_1.dir == 0){
+                    ball_1.vx = canvas.width/(secondsPerBeat);}
+                else{
+                    ball_1.vx = -canvas.width/(secondsPerBeat);}
+            if (ball_6.dir == 0){
+                    ball_6.vx = canvas.width/(secondsPerBeat);}
+                else{
+                    ball_6.vx = -canvas.width/(secondsPerBeat);}
+
+            ball_1.x += ball_1.vx  * (0.0172);
+            ball_6.x += ball_6.vx  * (0.0172);
+        }
+    }
+
+raf = window.requestAnimationFrame(animate);
+
+currentLastNote_temp = currentLastNote;
+afterTime = audioContext.currentTime;
+}
+
+
+
+function reset(){
+    window.AudioContext = window.AudioContext || window.webkitAudioContext;
+
+    audioContext = new AudioContext();
+}
+
+function reset_canvas(){
+    ball_1.x = 0;ball_1.vx = 0;ball_1.dir = 0;
+    ball_2.x = canvas.width / 8; ball_2.vx = 0; ball_2.dir = 1;
+    ball_3.x = canvas.width / 8 * 2; ball_3.vx = 0; ball_3.dir = 1;
+    ball_4.x = canvas.width / 8 * 3; ball_4.vx = 0; ball_4.dir = 1;
+    ball_5.x = canvas.width / 6; ball_5.vx = 0; ball_5.dir = 1;
+    ball_6.x = canvas.width / 6 * 2; ball_6.vx = 0; ball_6.dir = 1;
+}
+
+window.AudioContext = window.AudioContext || window.webkitAudioContext;
+audioContext = new AudioContext();
+
+
 
 function nextNote() {
     // Advance current note and time by a 16th note...
@@ -69,7 +458,7 @@ function scheduleNote( beatNumber, time ) {
         return;
 
     // create an oscillator
-    console.log(beatNumber)
+    //console.log(beatNumber)
     var osc = audioContext.createOscillator();
     osc.connect( audioContext.destination );
 
@@ -100,6 +489,8 @@ function scheduler() {
     while (nextNoteTime < audioContext.currentTime + scheduleAheadTime ) {
         scheduleNote( currentLastNote, nextNoteTime );
         nextNote();
+
+
     }
     timerID = window.setTimeout( scheduler, lookahead );
 }
@@ -113,120 +504,98 @@ function playToStart() {
         nextNoteTime = audioContext.currentTime;
         scheduler();    // kick off scheduling
         image.src = "Final_proj/stop.png";
-        console.log('yes')
+        window.requestAnimationFrame(animate);
+
+        afterTime = audioContext.currentTime;
     } else {
         window.clearTimeout( timerID );
         image.src = "Final_proj/start.png";
-                console.log('no')
+        window.cancelAnimationFrame(raf);
+        audioContext.close();
+        reset();
     }
 }
 
 function changeImage(){
     var image = document.getElementById('myImage2');
-
+    if(isPlaying){
     if(noteResolution == 0){
         image.src = 'Final_proj/8th.png';
         noteResolution = 1;
         tempoBase = 0;
+
+        window.clearTimeout( timerID );
+        window.cancelAnimationFrame(raf);
+        audioContext.close();
+        reset();
+        currentLastNote = 0;
+        nextNoteTime = audioContext.currentTime;
+        scheduler();    // kick off scheduling
+        window.requestAnimationFrame(animate);
+
+   
+
     }
     else if(noteResolution == 1){
         image.src = 'Final_proj/4th.png';
         noteResolution = 2;
         tempoBase = 0;
+
+        window.clearTimeout( timerID );
+        window.cancelAnimationFrame(raf);
+        audioContext.close();
+        reset();
+        currentLastNote = 0;
+        nextNoteTime = audioContext.currentTime;
+        scheduler();    // kick off scheduling
+        window.requestAnimationFrame(animate);
+
     }
     else if(noteResolution == 2){
         image.src = 'Final_proj/triplet.png';
         noteResolution = 3;
         tempoBase = 1;
+
+        window.clearTimeout( timerID );
+        window.cancelAnimationFrame(raf);
+        audioContext.close();
+        reset();
+        currentLastNote = 0;
+        nextNoteTime = audioContext.currentTime;
+        scheduler();    // kick off scheduling
+        window.requestAnimationFrame(animate);
     }
     else if(noteResolution == 3){
         image.src = 'Final_proj/swing.png';
         noteResolution = 4;
         tempoBase = 1;
+
+        window.clearTimeout( timerID );
+        window.cancelAnimationFrame(raf);
+        audioContext.close();
+        reset();
+        currentLastNote = 0;
+        nextNoteTime = audioContext.currentTime;
+        scheduler();    // kick off scheduling
+        window.requestAnimationFrame(animate);
     }
     else{
         image.src = 'Final_proj/16th.png';
         noteResolution = 0;
         tempoBase = 0;
+
+        window.clearTimeout( timerID );
+        window.cancelAnimationFrame(raf);
+        audioContext.close();
+        reset();
+        currentLastNote = 0;
+        nextNoteTime = audioContext.currentTime;
+        scheduler();    // kick off scheduling
+        window.requestAnimationFrame(animate);
     }
-
 }
-
-function resetCanvas (e) {
-    // resize the canvas - but remember - this clears the canvas too.
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-
-    //make sure we scroll to the top left.
-    window.scrollTo(0,0); 
 }
-
-
-    var pos = 0;
-    var vel = 5;
-
-function draw() {
-    var currentNote = last16thNoteDrawn;
-    var currentTime = audioContext.currentTime;
-
-    while (notesInQueue.length && notesInQueue[0].time < currentTime) {
-        currentNote = notesInQueue[0].note;
-        notesInQueue.splice(0,1);   // remove note from queue
-    }
-    var acc = 2 * canvas.width / (secondsPerBeat * secondsPerBeat);
-    var acc = 10;
-    // We only need to draw if the note has moved.
-    if (last16thNoteDrawn != currentNote) {
-        var x = Math.floor( canvas.width / 18 );
-        canvasContext.clearRect(0,0,canvas.width, canvas.height);
-
-        if(isPlaying){
-
-            canvasContext.beginPath();
-            canvasContext.arc(pos, 50, 10, 0, Math.PI*2, true);
-            canvasContext.closePath();
-
-            canvasContext.fill();
-            pos += vel;
-
-            if (pos + vel > canvas.width || pos + vel < 0) {
-                vel = - vel;
-            }
-
-            //canvasContext.fillStyle = 'rgba(255,255,255,0.3)';
-            canvasContext.fill();
-
-        }
-
-     //   last16thNoteDrawn = currentNote;
-    }
-
-    // set up to draw again
-    requestAnimFrame(draw);
-}
-
-function init(){
-    var container = document.createElement( 'div' );
-
-    container.className = "container";
-    canvas = document.createElement( 'canvas' );
-    canvasContext = canvas.getContext( '2d' );
-    canvas.width = 100; 
-    canvas.height = window.innerHeight; 
-    document.body.appendChild( container );
-    container.appendChild(canvas);  
-    canvasContext.strokeStyle = "#ffffff";
-    canvasContext.lineWidth = 2;
-
-    window.AudioContext = window.AudioContext || window.webkitAudioContext;
-    audioContext = new AudioContext();
 
     // if we wanted to load audio files, etc., this is where we should do it.
 
-    window.onorientationchange = resetCanvas;
-    window.onresize = resetCanvas;
-
-    requestAnimFrame(draw); // start the drawing loop.
-}
-
-window.addEventListener("load", init );
+    //requestAnimFrame(draw); // start the drawing loop.

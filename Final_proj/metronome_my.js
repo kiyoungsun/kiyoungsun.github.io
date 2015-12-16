@@ -124,20 +124,13 @@ function play() {
 //  var currentNote = last16thNoteDrawn;
 // var currentTime = audioContext.currentTime;
 
-  ctx.clearRect(0,0, canvas.width, canvas.height);
+  canvasContext.clearRect(0,0, canvas.width, canvas.height);
   ball.draw();
   ball.x += ball.vx;
   ball.y += ball.vy;
-  raf = window.requestAnimationFrame(draw);
+  requestAnimFrame(draw);
 }
 
-canvas.addEventListener('mouseover', function(e){
-  raf = window.requestAnimationFrame(draw);
-});
-
-canvas.addEventListener("mouseout",function(e){
-  window.cancelAnimationFrame(raf);
-});
 
 
 function init(){

@@ -151,7 +151,7 @@ function init(){
     requestAnimFrame(draw); // start the drawing loop.
 }
 
-//window.addEventListener("load", init );
+window.addEventListener("load", init );
 
 
 ball.draw();

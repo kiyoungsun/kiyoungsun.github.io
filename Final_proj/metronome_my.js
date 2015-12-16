@@ -143,10 +143,11 @@ function init(){
     // if we wanted to load audio files, etc., this is where we should do it.
 
 
+
+    ball.draw();
      raf = window.requestAnimationFrame(draw); // start the drawing loop.
 }
-
+raf = window.requestAnimationFrame(draw);
 window.addEventListener("load", init );
 
 
-ball.draw();

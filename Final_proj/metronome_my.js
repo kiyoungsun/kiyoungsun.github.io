@@ -147,8 +147,10 @@ function init(){
     ball.draw();
      raf = window.requestAnimationFrame(draw); // start the drawing loop.
 }
-raf = window.requestAnimationFrame(draw);
+
 console.log("yeah")
 window.addEventListener("load", init );
 
-
+while (isPlaying){
+raf = window.requestAnimationFrame(draw);
+}

@@ -116,61 +116,18 @@ function play() {
     }
 }
 
-function resetCanvas (e) {
-    // resize the canvas - but remember - this clears the canvas too.
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-
-    //make sure we scroll to the top left.
-    window.scrollTo(0,0); 
-}
-
 function draw() {
     var currentNote = last16thNoteDrawn;
     var currentTime = audioContext.currentTime;
-
-    while (notesInQueue.length && notesInQueue[0].time < currentTime) {
-        currentNote = notesInQueue[0].note;
-        notesInQueue.splice(0,1);   // remove note from queue
-    }
-
-    // We only need to draw if the note has moved.
- //   if (last16thNoteDrawn != currentNote) {
- //       var x = Math.floor( canvas.width / 18 );
-  //      canvasContext.clearRect(0,0,canvas.width, canvas.height); 
-  //      for (var i=0; i<16; i++) {
-   //         canvasContext.fillStyle = ( currentNote == i ) ? 
-   //             ((currentNote%4 == 0)?"red":"blue") : "black";
-  //          canvasContext.fillRect( x * (i+1), x, x/2, x/2 );
-  //      }
-  //      last16thNoteDrawn = currentNote;
- //   }
-    ball.draw();
-    ball.x += ball.vx;
-    ball.y += ball.vy;
-    if (ball.y + ball.vy > canvas.height || ball.y + ball.vy < 0) {
-      ball.vy = -ball.vy;
-    }
-    if (ball.x + ball.vx > canvas.width || ball.x + ball.vx < 0) {
-      ball.vx = -ball.vx;
-    }
-    // set up to draw again
-    requestAnimFrame(draw);
 }
 
 function init(){
 
-
-
-
-    ball.draw();
     window.AudioContext = window.AudioContext || window.webkitAudioContext;
     audioContext = new AudioContext();
 
     // if we wanted to load audio files, etc., this is where we should do it.
 
-    window.onorientationchange = resetCanvas;
-    window.onresize = resetCanvas;
 
     requestAnimFrame(draw); // start the drawing loop.
 }

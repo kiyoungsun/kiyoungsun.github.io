@@ -116,12 +116,14 @@ function play() {
     }
 }
 
-function draw() {
-    var currentNote = last16thNoteDrawn;
-    var currentTime = audioContext.currentTime;
+
 
 
     function draw() {
+
+//  var currentNote = last16thNoteDrawn;
+// var currentTime = audioContext.currentTime;
+
   ctx.clearRect(0,0, canvas.width, canvas.height);
   ball.draw();
   ball.x += ball.vx;

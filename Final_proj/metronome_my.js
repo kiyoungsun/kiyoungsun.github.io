@@ -25,6 +25,8 @@ var notesInQueue = [];      // the notes that have been put into the web audio,
     canvas.width = window.innerWidth; 
     canvas.height = window.innerHeight; 
     canvas.fillStyle = "#ffffff";
+
+    var raf;
     //canvasContext.strokeStyle = "#ffffff";
     //canvasContext.lineWidth = 2;
     var ball = {
@@ -119,7 +121,7 @@ function play() {
 
 
 
-    function draw() {
+function draw() {
 
 //  var currentNote = last16thNoteDrawn;
 // var currentTime = audioContext.currentTime;
@@ -128,7 +130,7 @@ function play() {
   ball.draw();
   ball.x += ball.vx;
   ball.y += ball.vy;
-  requestAnimFrame(draw);
+ raf = window.requestAnimationFrame(draw);
 }
 
 
@@ -141,7 +143,7 @@ function init(){
     // if we wanted to load audio files, etc., this is where we should do it.
 
 
-    requestAnimFrame(draw); // start the drawing loop.
+     raf = window.requestAnimationFrame(draw); // start the drawing loop.
 }
 
 window.addEventListener("load", init );

@@ -22,7 +22,7 @@ var notesInQueue = [];      // the notes that have been put into the web audio,
 
     canvas = document.createElement( 'canvas' );
     canvasContext = canvas.getContext( '2d' );
-        canvas.width = window.innerWidth; 
+    canvas.width = window.innerWidth; 
     canvas.height = window.innerHeight; 
     canvas.fillStyle = "#ffffff";
     //canvasContext.strokeStyle = "#ffffff";
@@ -119,7 +119,24 @@ function play() {
 function draw() {
     var currentNote = last16thNoteDrawn;
     var currentTime = audioContext.currentTime;
+
+
+    function draw() {
+  ctx.clearRect(0,0, canvas.width, canvas.height);
+  ball.draw();
+  ball.x += ball.vx;
+  ball.y += ball.vy;
+  raf = window.requestAnimationFrame(draw);
 }
+
+canvas.addEventListener('mouseover', function(e){
+  raf = window.requestAnimationFrame(draw);
+});
+
+canvas.addEventListener("mouseout",function(e){
+  window.cancelAnimationFrame(raf);
+});
+
 
 function init(){
 
@@ -132,4 +149,7 @@ function init(){
     requestAnimFrame(draw); // start the drawing loop.
 }
 
-window.addEventListener("load", init );
+//window.addEventListener("load", init );
+
+
+ball.draw();

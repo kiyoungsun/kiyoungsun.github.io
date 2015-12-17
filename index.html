@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html>
   <head>
@@ -54,12 +53,23 @@ button to start again</td>
 <td> </td>
 </tr></table>
 
-
-
-
-
       Resolution: <div><img id="myImage2" onclick="changeImage()" src="Final_proj/16th.png" width="90" height"45"></div>
       <canvas id="canvas" width="400" height="300"></canvas></div>
+
+
+<h2> I. Introduction </h2>
+  <h3> 1. Motivation/background </h3>
+    <h4> Existing 'metronome' apps usally make only 4 beats base sounds and even if it can be represented, they only make sound not include the visual representations of beats. The purpose of this project is to make the metronome beat beeping system and furthermore, most ultimate purpose is to represent the beat easily in viewable way with bouncing object.</h4>
+    <h2> II. System descriptions </h2>
+  <h3> 1. Signal flows </h3>
+    <h4> If you click 'play' buton, schedule() function implemented with its resolution option (if it is 4 beats based, then schedule the notes divided in 16 notes and if it is 3 beats based, then schedule the notes divided in 12 notes). Then we distinguished all first beats with diffrent sound which has diffrent frequency value. And then represented the beats in balls to bound the walls to count the beat.  </h4>
+<h2> III. References </h2>
+    <h4> Main Metronome Frame : http://www.html5rocks.com/en/tutorials/audio/scheduling/goodmetronome.html </h4>
+    <h4> BPM tapping system : http://www.all8.com/tools/bpm.htm </h4>
+    <h4> Moving ball : https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API/Tutorial/Advanced_animations </h4>
+    <h4> Moving ball2 : http://www.soundesign.info/2015/10/31/web-audio-api-html5-canvas-part2/?utm_campaign=sd-magazine&utm_source=facebook&utm_medium=social <h4>
+
+
 
    </body>
        <link rel="stylesheet" href="Final_proj/metronome.css">

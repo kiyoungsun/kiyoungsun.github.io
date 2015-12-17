@@ -216,6 +216,7 @@ function animate(){
                 else{
                     ball_4.vx = -canvas.width/(secondsPerBeat);}
 
+            time_diff = (audioContext.currentTime - afterTime);
             ball_1.x += ball_1.vx  * (0.0172);
             ball_2.x += ball_2.vx  * (0.0172);
             ball_3.x += ball_3.vx  * (0.0172);

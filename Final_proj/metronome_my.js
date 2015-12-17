@@ -470,19 +470,19 @@ function scheduleNote( beatNumber, time ) {
 
     if (tempoBase == 0){
         if (! (beatNumber % 16) )   // beat 0 == low pitch
-            osc.frequency.value = 220.0;
-        else if (beatNumber % 4)    // quarter notes = medium pitch
-            osc.frequency.value = 440.0;
-        else                        // other 16th notes = high pitch
             osc.frequency.value = 880.0;
+        else if (beatNumber % 4)    // quarter notes = medium pitch
+            osc.frequency.value = 220.0;
+        else                        // other 16th notes = high pitch
+            osc.frequency.value = 440.0;
     }
     else{
         if (! (beatNumber % 12) )
-            osc.frequency.value = 220.0;
-        else if (beatNumber % 3)
-            osc.frequency.value = 440.0;
-        else
             osc.frequency.value = 880.0;
+        else if (beatNumber % 3)
+            osc.frequency.value = 220.0;
+        else
+            osc.frequency.value = 440.0;
     }
 
     osc.start( time );

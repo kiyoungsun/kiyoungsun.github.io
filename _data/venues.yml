@@ -1,9 +1,47 @@
-"AJP":
-  url: https://aapt.scitation.org/journal/ajp
+"IEEE TAES":
+  url: https://ieeexplore.ieee.org/xpl/RecentIssue.jsp?punumber=7
   color: "#00369f"
 
-"PhysRev":
-  url: https://journals.aps.org/
+"NAVIGATION":
+  url: https://navi.ion.org
+  color: "#00369f"
 
-"Vision":
-  color: "#009f36"
+"JGR Space Physics":
+  url: https://agupubs.onlinelibrary.wiley.com/journal/21699402
+  color: "#00369f"
+
+"GRL":
+  url: https://agupubs.onlinelibrary.wiley.com/journal/19448007
+  color: "#00369f"
+
+"Radio Science":
+  url: https://agupubs.onlinelibrary.wiley.com/journal/1944799x
+  color: "#00369f"
+
+"Space Weather":
+  url: https://agupubs.onlinelibrary.wiley.com/journal/15427390
+  color: "#00369f"
+
+"ION ITM":
+  url: https://www.ion.org/itm/
+  color: "#2698ba"
+
+"ION GNSS+":
+  url: https://www.ion.org/gnss/
+  color: "#2698ba"
+
+"ION PNT":
+  url: https://www.ion.org/pnt/
+  color: "#2698ba"
+
+"AGU Fall Meeting":
+  url: https://www.agu.org/Fall-Meeting
+  color: "#2698ba"
+
+"URSI GASS":
+  url: https://www.ursi.org/meetings/gass2021/
+  color: "#2698ba"
+
+"COSPAR":
+  url: https://www.cospar-assembly.org/
+  color: "#2698ba"
